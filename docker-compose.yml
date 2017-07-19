@@ -10,3 +10,5 @@ db:
   image: mysql
   environment:
     - MYSQL_ROOT_PASSWORD=password
+  volumes:
+    - /Users/cbv/work/CMAD/mysql/data:/var/lib/mysql/data
