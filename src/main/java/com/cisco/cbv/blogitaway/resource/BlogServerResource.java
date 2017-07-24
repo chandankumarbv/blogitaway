@@ -11,6 +11,9 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import com.cisco.cbv.blogitaway.dao.BlogDaoImpl;
+import com.cisco.cbv.blogitaway.model.Blog;
+
 @Path("/blog")
 public class BlogServerResource {
 
@@ -30,7 +33,8 @@ public class BlogServerResource {
 	@Path("{blog_id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getSpecificBlog(@PathParam("{blog_id}") int blogId) {
-		return Response.ok().build();
+		Blog blog = BlogDaoImpl.getInstance().read(blogId);
+		return Response.ok().entity(blog).build();
 	}
 
 	@POST
