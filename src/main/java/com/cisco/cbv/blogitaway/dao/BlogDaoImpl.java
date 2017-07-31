@@ -3,6 +3,7 @@ package com.cisco.cbv.blogitaway.dao;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 
 import com.cisco.cbv.blogitaway.model.Blog;
 import com.cisco.cbv.blogitaway.model.Comment;
@@ -38,7 +39,10 @@ public class BlogDaoImpl implements BlogDao {
 
 	@Override
 	public List<Blog> getAllBlogs() {
-		return null;
+		EntityManager entityManager = PersistenceUtil.getEntityManager();
+		Query query = entityManager.createQuery("SELECT b from Blog b");
+		List<Blog> blogList = query.getResultList();
+		return blogList;
 	}
 
 	@Override

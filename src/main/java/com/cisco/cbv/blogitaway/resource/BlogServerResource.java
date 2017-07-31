@@ -1,5 +1,7 @@
 package com.cisco.cbv.blogitaway.resource;
 
+import java.util.List;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -25,7 +27,13 @@ public class BlogServerResource {
 
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response postBlog() {
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response postBlog(Blog blog) {
+		Blog blog2 = new Blog();
+		blog2.setId(2);
+		blog2.setTitle("Blog title");
+		blog2.setContent("THis is content of the lbog");
+		BlogDaoImpl.getInstance().create(blog2);
 		return Response.ok().build();
 	}
 
@@ -47,7 +55,8 @@ public class BlogServerResource {
 	@Path("/trending")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getTrendingBlogs(@QueryParam("limit") int limit, @QueryParam("offset") int offset) {
-		return Response.ok().build();
+		List<Blog> allBlogs = BlogDaoImpl.getInstance().getAllBlogs();
+		return Response.ok().entity(allBlogs).build();
 	}
 
 	@POST

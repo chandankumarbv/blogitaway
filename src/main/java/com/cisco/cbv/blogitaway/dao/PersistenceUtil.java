@@ -13,7 +13,7 @@ public class PersistenceUtil {
 
 	private static EntityManagerFactory getEMFactory() {
 		if (emFactory == null) {
-			emFactory = Persistence.createEntityManagerFactory("library");
+			emFactory = Persistence.createEntityManagerFactory("blogitaway");
 		}
 		return emFactory;
 	}
