@@ -1,5 +1,7 @@
 package com.cisco.cbv.blogitaway.dao;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -21,11 +23,25 @@ public class UserDaoImpl implements UserDao {
 	}
 
 	@Override
-	public void create(User user) {
+	public void create(User user) throws NoSuchAlgorithmException {
 		EntityManager entityManager = PersistenceUtil.getEntityManager();
+		encryptPasswd(user);
 		entityManager.getTransaction().begin();
 		entityManager.persist(user);
 		entityManager.getTransaction().commit();
+	}
+
+	private void encryptPasswd(User user) throws NoSuchAlgorithmException {
+		String clearTextPassword = user.getPassword();
+		String hashedPasswd = encrypt(clearTextPassword);
+		user.setPassword(hashedPasswd);
+	}
+
+	private String encrypt(String clearTextPassword) throws NoSuchAlgorithmException {
+		MessageDigest messageDigest = MessageDigest.getInstance("MD5");
+		messageDigest.update(clearTextPassword.getBytes());
+		String hashedPasswd = new String(messageDigest.digest());
+		return hashedPasswd;
 	}
 
 	@Override

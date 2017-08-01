@@ -1,5 +1,8 @@
 package com.cisco.cbv.blogitaway.resource;
 
+import java.security.NoSuchAlgorithmException;
+import java.util.List;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -11,18 +14,23 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import com.cisco.cbv.blogitaway.dao.UserDaoImpl;
+import com.cisco.cbv.blogitaway.model.User;
+
 @Path("/user")
 public class UserServerResource {
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getUsers(@QueryParam("limit") int limit, @QueryParam("offset") int offset) {
-		return Response.ok().build();
+		List<User> allUsers = UserDaoImpl.getInstance().getAllUsers();
+		return Response.ok().entity(allUsers).build();
 	}
 
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response createUser() {
+	public Response createUser(User user) throws NoSuchAlgorithmException {
+		UserDaoImpl.getInstance().create(user);
 		return Response.ok().build();
 	}
 
@@ -30,14 +38,18 @@ public class UserServerResource {
 	@Path("{user_id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getUserDetails(@PathParam("{user_id}") int userId) {
-		return Response.ok().build();
+		User user = UserDaoImpl.getInstance().read(userId);
+		return Response.ok().entity(user).build();
 	}
 
 	@POST
 	@Path("{user_id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response updateUserDetails(@PathParam("{user_id}") int userId) {
+	public Response updateUserDetails(@PathParam("{user_id}") int userId, User user) {
+		User currentUser = UserDaoImpl.getInstance().read(userId);
+		user.setUserId(currentUser.getUserId());
+		UserDaoImpl.getInstance().updateUser(userId, user);
 		return Response.ok().build();
 	}
 
@@ -60,6 +72,5 @@ public class UserServerResource {
 	public Response deleteUser(@PathParam("{user_id}") int userId) {
 		return Response.ok().build();
 	}
-
 
 }
