@@ -40,14 +40,14 @@ public class BlogServerResource {
 	@GET
 	@Path("{blog_id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getSpecificBlog(@PathParam("{blog_id}") int blogId) {
+	public Response getSpecificBlog(@PathParam("blog_id") int blogId) {
 		Blog blog = BlogDaoImpl.getInstance().read(blogId);
 		return Response.ok().entity(blog).build();
 	}
 
 	@POST
 	@Path("/{blog_id}/publish")
-	public Response publishBlog(@PathParam("{blog_id}") int blogId) {
+	public Response publishBlog(@PathParam("blog_id") int blogId) {
 		return Response.ok().build();
 	}
 
@@ -61,13 +61,13 @@ public class BlogServerResource {
 
 	@POST
 	@Path("/{blog_id}/reportAbuse")
-	public Response reportAbuseForBlog(@PathParam("{blog_id}") int blogId) {
+	public Response reportAbuseForBlog(@PathParam("blog_id") int blogId) {
 		return Response.ok().build();
 	}
 
 	@DELETE
 	@Path("/{blog_id}")
-	public Response deleteBlog(@PathParam("{blog_id}") int blogId) {
+	public Response deleteBlog(@PathParam("blog_id") int blogId) {
 		return Response.ok().build();
 	}
 
@@ -84,27 +84,27 @@ public class BlogServerResource {
 	@GET
 	@Path("/{blog_id}/comment")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getAllComments(@PathParam("{blog_id}") int blogId) {
+	public Response getAllComments(@PathParam("blog_id") int blogId) {
 		return Response.ok().build();
 	}
 
 	@GET
 	@Path("{blog_id}/{comment_id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getSpecificComment(@PathParam("{blog_id}") int blogIdj, @PathParam("{comment_id}") int commentId) {
+	public Response getSpecificComment(@PathParam("blog_id") int blogIdj, @PathParam("comment_id") int commentId) {
 		return Response.ok().build();
 	}
 
 	@POST
 	@Path("/{blog_id}/{comment_id}/reportAbuse")
-	public Response reportAbuseForComment(@PathParam("{blog_id}") int blogId,
-			@PathParam("{comment_id}") int commentId) {
+	public Response reportAbuseForComment(@PathParam("blog_id") int blogId,
+			@PathParam("comment_id") int commentId) {
 		return Response.ok().build();
 	}
 
 	@DELETE
 	@Path("/{blog_id}/{comment_id}")
-	public Response deleteComment(@PathParam("{blog_id}") int blogId, @PathParam("{comment_id}") int commentId) {
+	public Response deleteComment(@PathParam("blog_id") int blogId, @PathParam("comment_id") int commentId) {
 		return Response.ok().build();
 	}
 
