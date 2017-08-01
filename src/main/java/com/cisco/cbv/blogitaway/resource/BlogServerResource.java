@@ -40,7 +40,7 @@ public class BlogServerResource {
 	@GET
 	@Path("{blog_id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getSpecificBlog(@PathParam("{blog_id}") int blogId) {
+	public Response getSpecificBlog(@PathParam("blog_id") int blogId) {
 		return Response.ok().build();
 	}
 

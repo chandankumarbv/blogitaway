@@ -29,13 +29,13 @@ public class ImageServerResource {
 	@GET
 	@Path("{image_id}")
 	@Produces(MediaType.MULTIPART_FORM_DATA)
-	public Response getSpecificImage(@PathParam("{image_id}") int imageId) {
+	public Response getSpecificImage(@PathParam("image_id") int imageId) {
 		return Response.ok().build();
 	}
 
 	@DELETE
 	@Path("/{image_id}")
-	public Response deleteImage(@PathParam("{image_id}") int imageId) {
+	public Response deleteImage(@PathParam("image_id") int imageId) {
 		return Response.ok().build();
 	}
 
