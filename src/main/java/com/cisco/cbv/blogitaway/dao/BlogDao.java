@@ -15,5 +15,4 @@ public interface BlogDao {
 	
 	// TODO should comment be part of separate DAO or Blog dao.
 	public List<Comment> getAllComments(int blogId);
-
 }
