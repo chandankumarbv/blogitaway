@@ -14,6 +14,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.StatusType;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
@@ -40,45 +41,45 @@ public class UserServerResource {
 	}
 
 	@GET
-	@Path("{user_id}")
+	@Path("{user_name}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getUserDetails(@PathParam("user_id") int userId) {
-		User user = UserDaoImpl.getInstance().read(userId);
+	@AuthorizationNeeded
+	public Response getUserDetails(@PathParam("user_name") String userName) {
+		User user = UserDaoImpl.getInstance().read(userName);
 		return Response.ok().entity(user).build();
 	}
 
 	@POST
-	@Path("{user_id}")
+	@Path("{user_name}")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response updateUserDetails(@PathParam("user_id") int userId, User user) {
-		User currentUser = UserDaoImpl.getInstance().read(userId);
-		user.setUserId(currentUser.getUserId());
-		UserDaoImpl.getInstance().updateUser(userId, user);
+	public Response updateUserDetails(@PathParam("user_name") String userName, User user) {
+		// User currentUser = UserDaoImpl.getInstance().read(userId);
+		// user.setUserId(currentUser.getUserId());
+		UserDaoImpl.getInstance().updateUser(userName, user);
 		return Response.ok().build();
 	}
 
 	@POST
 	@Path("/login")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response loginUser() throws IllegalArgumentException, UnsupportedEncodingException {
-		Algorithm algorithmHS = Algorithm.HMAC256("secret");
-		String token = JWT.create()
-		        .withIssuer("auth0")
-		        .sign(algorithmHS);
-		return Response.ok().entity(token).build();
+	public Response loginUser(User user) throws IllegalArgumentException, UnsupportedEncodingException {
+		if (UserDaoImpl.getInstance().authenticate(user)) {
+			String token = AuthUtil.issueToken();
+			return Response.ok().entity(token).build();
+		} else {
+			return Response.status(401).entity("Authentication Failed.").build();
+		}
 	}
 
 	@GET
 	@Path("/verifyToken")
-	public Response verifyJWTToken(@QueryParam("token")String token) throws IllegalArgumentException, UnsupportedEncodingException {
-	    Algorithm algorithm = Algorithm.HMAC256("secret");
-	    JWTVerifier verifier = JWT.require(algorithm)
-	        .withIssuer("auth0")
-	        .build(); //Reusable verifier instance
-	    DecodedJWT jwt = verifier.verify(token);
-	    String verifiedToken = jwt.getToken();
-	    return Response.ok().entity(verifiedToken).build();
+	public Response verifyJWTToken(@QueryParam("token") String token)
+			throws IllegalArgumentException, UnsupportedEncodingException {
+		if (AuthUtil.verifyToken(token)) {
+			return Response.ok().build();
+		}
+		return Response.status(401).entity("Verification failed.").build();
 	}
 
 	@POST

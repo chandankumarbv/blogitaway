@@ -8,10 +8,12 @@ import com.cisco.cbv.blogitaway.model.User;
 public interface UserDao {
 	public void create(User user) throws NoSuchAlgorithmException;
 
-	public User read(int userId);
+	public User read(String userName);
 	
 	public List<User> getAllUsers();
 	
-	public void updateUser(int userId, User user);
+	public void updateUser(String userName, User user);
+
+	public boolean authenticate(User user);
 
 }

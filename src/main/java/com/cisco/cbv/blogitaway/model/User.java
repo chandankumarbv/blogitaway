@@ -1,24 +1,26 @@
 package com.cisco.cbv.blogitaway.model;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 @Entity
 public class User {
 	@Id
-	private int userId;
-	@ManyToOne
-	private UserRole role;
 	private String userName;
+	@ManyToOne(cascade = CascadeType.ALL)
+	private UserRole role;
+	@OneToMany
+	private List<Blog> blogList;
 	private String password;
 	private String emailAddress;
 	private String phoneNumber;
 	private String address;
-// add blog relation.
-	public int getUserId() {
-		return userId;
-	}
+	// add blog relation.
 
 	public UserRole getRole() {
 		return role;
@@ -28,12 +30,16 @@ public class User {
 		this.role = role;
 	}
 
-	public void setUserId(int userId) {
-		this.userId = userId;
-	}
-
 	public String getUserName() {
 		return userName;
+	}
+
+	public List<Blog> getBlogList() {
+		return blogList;
+	}
+
+	public void setBlogList(List<Blog> blogList) {
+		this.blogList = blogList;
 	}
 
 	public void setUserName(String userName) {

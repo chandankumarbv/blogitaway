@@ -38,16 +38,18 @@ public class UserDaoImpl implements UserDao {
 	}
 
 	private String encrypt(String clearTextPassword) throws NoSuchAlgorithmException {
-		MessageDigest messageDigest = MessageDigest.getInstance("MD5");
-		messageDigest.update(clearTextPassword.getBytes());
-		String hashedPasswd = new String(messageDigest.digest());
-		return hashedPasswd;
+//		MessageDigest messageDigest = MessageDigest.getInstance("MD5");
+//		messageDigest.update(clearTextPassword.getBytes());
+//		String hashedPasswd = new String(messageDigest.digest());
+//		return hashedPasswd;
+		
+		return Integer.toString(clearTextPassword.hashCode());
 	}
 
 	@Override
-	public User read(int userId) {
+	public User read(String userName) {
 		EntityManager entityManager = PersistenceUtil.getEntityManager();
-		User user = entityManager.find(User.class, userId);
+		User user = entityManager.find(User.class, userName);
 		return user;
 	}
 
@@ -60,9 +62,25 @@ public class UserDaoImpl implements UserDao {
 	}
 
 	@Override
-	public void updateUser(int userId, User user) {
+	public void updateUser(String userName, User user) {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public boolean authenticate(User user) {
+		String userName = user.getUserName();
+		User userFromDb = read(userName);
+		String encryptedPasswd = userFromDb.getPassword();
+		try {
+			if (encryptedPasswd.equals(encrypt(user.getPassword()))) {
+				return true;
+			}
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+			return false;
+		}
+		return false;
 	}
 
 }

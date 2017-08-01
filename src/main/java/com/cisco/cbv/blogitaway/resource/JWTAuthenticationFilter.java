@@ -15,6 +15,7 @@ public class JWTAuthenticationFilter implements ContainerRequestFilter {
 
 	@Override
 	public void filter(ContainerRequestContext requestContext) throws IOException {
+		System.out.println("JWT URL: " + requestContext.getUriInfo().getPath());
 
 	}
 
