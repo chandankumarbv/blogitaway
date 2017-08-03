@@ -38,11 +38,11 @@ public class UserDaoImpl implements UserDao {
 	}
 
 	private String encrypt(String clearTextPassword) throws NoSuchAlgorithmException {
-//		MessageDigest messageDigest = MessageDigest.getInstance("MD5");
-//		messageDigest.update(clearTextPassword.getBytes());
-//		String hashedPasswd = new String(messageDigest.digest());
-//		return hashedPasswd;
-		
+		// MessageDigest messageDigest = MessageDigest.getInstance("MD5");
+		// messageDigest.update(clearTextPassword.getBytes());
+		// String hashedPasswd = new String(messageDigest.digest());
+		// return hashedPasswd;
+
 		return Integer.toString(clearTextPassword.hashCode());
 	}
 
@@ -62,15 +62,36 @@ public class UserDaoImpl implements UserDao {
 	}
 
 	@Override
-	public void updateUser(String userName, User user) {
-		// TODO Auto-generated method stub
+	public User updateUser(String userName, User user) {
+		EntityManager entityManager = PersistenceUtil.getEntityManager();
+		User managedUser = entityManager.find(User.class, userName);
+		if (user.getAddress() != null) {
+			managedUser.setAddress(user.getAddress());
+		}
+		if (user.getPhoneNumber() != null) {
+			managedUser.setPhoneNumber(user.getPhoneNumber());
+		}
+		if (user.getPassword() != null) {
+			managedUser.setPassword(user.getPassword());
+		}
+		if (user.getRole() != null) {
+			managedUser.setRole(user.getRole());
+		}
 
+		entityManager.getTransaction().begin();
+		entityManager.merge(managedUser);
+		entityManager.getTransaction().commit();
+		return managedUser;
 	}
 
 	@Override
 	public boolean authenticate(User user) {
 		String userName = user.getUserName();
 		User userFromDb = read(userName);
+		if (userFromDb == null) {
+			// user not foudn.
+			return false;
+		}
 		String encryptedPasswd = userFromDb.getPassword();
 		try {
 			if (encryptedPasswd.equals(encrypt(user.getPassword()))) {

@@ -1,6 +1,7 @@
 package com.cisco.cbv.blogitaway.resource;
 
 import java.io.UnsupportedEncodingException;
+import java.net.URI;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
@@ -20,7 +21,9 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.cisco.cbv.blogitaway.dao.TokenDaoImpl;
 import com.cisco.cbv.blogitaway.dao.UserDaoImpl;
+import com.cisco.cbv.blogitaway.model.JWTToken;
 import com.cisco.cbv.blogitaway.model.User;
 
 @Path("/user")
@@ -36,8 +39,9 @@ public class UserServerResource {
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response createUser(User user) throws NoSuchAlgorithmException {
+
 		UserDaoImpl.getInstance().create(user);
-		return Response.ok().build();
+		return Response.created(URI.create("/" + user.getUserName())).build();
 	}
 
 	@GET
@@ -46,6 +50,9 @@ public class UserServerResource {
 	@AuthorizationNeeded
 	public Response getUserDetails(@PathParam("user_name") String userName) {
 		User user = UserDaoImpl.getInstance().read(userName);
+		if (user == null) {
+			return Response.status(404).build();
+		}
 		return Response.ok().entity(user).build();
 	}
 
@@ -53,11 +60,13 @@ public class UserServerResource {
 	@Path("{user_name}")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
+	@AuthorizationNeeded
 	public Response updateUserDetails(@PathParam("user_name") String userName, User user) {
-		// User currentUser = UserDaoImpl.getInstance().read(userId);
-		// user.setUserId(currentUser.getUserId());
-		UserDaoImpl.getInstance().updateUser(userName, user);
-		return Response.ok().build();
+		if (UserDaoImpl.getInstance().read(userName) == null) {
+			return Response.status(404).build();
+		}
+		User updatedUser = UserDaoImpl.getInstance().updateUser(userName, user);
+		return Response.accepted(updatedUser).build();
 	}
 
 	@POST
@@ -65,7 +74,14 @@ public class UserServerResource {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response loginUser(User user) throws IllegalArgumentException, UnsupportedEncodingException {
 		if (UserDaoImpl.getInstance().authenticate(user)) {
-			String token = AuthUtil.issueToken();
+			String token = AuthUtil.issueToken(user.getUserName());
+			JWTToken jwtToken = TokenDaoImpl.getInstance().read(user.getUserName());
+			if (jwtToken != null) {
+				jwtToken.setToken(token);
+				TokenDaoImpl.getInstance().update(jwtToken);
+			} else {
+				TokenDaoImpl.getInstance().store(user.getUserName(), token);
+			}
 			return Response.ok().entity(token).build();
 		} else {
 			return Response.status(401).entity("Authentication Failed.").build();
@@ -84,8 +100,10 @@ public class UserServerResource {
 
 	@POST
 	@Path("/logout")
+	@AuthorizationNeeded
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response logoutUser() {
+	public Response logoutUser(User user) {
+		TokenDaoImpl.getInstance().delete(user.getUserName());
 		return Response.ok().build();
 	}
 

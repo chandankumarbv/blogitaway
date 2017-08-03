@@ -12,7 +12,7 @@ public interface UserDao {
 	
 	public List<User> getAllUsers();
 	
-	public void updateUser(String userName, User user);
+	public User updateUser(String userName, User user);
 
 	public boolean authenticate(User user);
 
