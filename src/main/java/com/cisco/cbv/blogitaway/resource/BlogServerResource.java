@@ -1,5 +1,7 @@
 package com.cisco.cbv.blogitaway.resource;
 
+import java.util.List;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -11,6 +13,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import com.cisco.cbv.blogitaway.dao.BlogDaoImpl;
 import com.cisco.cbv.blogitaway.model.Blog;
 import com.cisco.cbv.blogitaway.model.Comment;
 
@@ -29,11 +32,12 @@ public class BlogServerResource {
 	public Response postBlog(Blog blog) {
 		return Response.ok().build();
 	}
-	
+
 	@GET
 	@Path("/search")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response searchBlogs(@QueryParam("limit") int limit, @QueryParam("offset") int offset, @QueryParam("query") String query) {
+	public Response searchBlogs(@QueryParam("limit") int limit, @QueryParam("offset") int offset,
+			@QueryParam("query") String query) {
 		return Response.ok().build();
 	}
 
@@ -41,7 +45,8 @@ public class BlogServerResource {
 	@Path("{blog_id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getSpecificBlog(@PathParam("blog_id") int blogId) {
-		return Response.ok().build();
+		Blog blog = BlogDaoImpl.getInstance().read(blogId);
+		return Response.ok().entity(blog).build();
 	}
 
 	@POST
@@ -54,7 +59,8 @@ public class BlogServerResource {
 	@Path("/trending")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getTrendingBlogs(@QueryParam("limit") int limit, @QueryParam("offset") int offset) {
-		return Response.ok().build();
+		List<Blog> allBlogs = BlogDaoImpl.getInstance().getAllBlogs();
+		return Response.ok().entity(allBlogs).build();
 	}
 
 	@POST
