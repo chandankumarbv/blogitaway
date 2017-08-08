@@ -2,6 +2,8 @@ package com.cisco.cbv.blogitaway.service;
 
 import java.util.List;
 
+import com.cisco.cbv.blogitaway.dao.BlogDao;
+import com.cisco.cbv.blogitaway.dao.BlogDaoImpl;
 import com.cisco.cbv.blogitaway.model.Blog;
 import com.cisco.cbv.blogitaway.model.BlogNotFoundException;
 import com.cisco.cbv.blogitaway.model.BlogitAwayException;
@@ -15,11 +17,12 @@ import com.cisco.cbv.blogitaway.model.NoCommentsFoundException;
 import com.cisco.cbv.blogitaway.model.PagingConfig;
 
 public class BlogServiceImpl implements BlogService{
+	private BlogDao blogDao = BlogDaoImpl.getInstance();
 
 	@Override
 	public List<Blog> getBlogs(PagingConfig pagingConfig)
 			throws NoBlogsFoundException, InvalidValueException, BlogitAwayException {
-		return null;
+		return blogDao.getBlogs(pagingConfig);
 	}
 
 	@Override

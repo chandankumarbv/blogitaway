@@ -1,5 +1,6 @@
 package com.cisco.cbv.blogitaway.dao;
 
+
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -7,6 +8,7 @@ import javax.persistence.Query;
 
 import com.cisco.cbv.blogitaway.model.Blog;
 import com.cisco.cbv.blogitaway.model.Comment;
+import com.cisco.cbv.blogitaway.model.PagingConfig;
 
 public class BlogDaoImpl implements BlogDao {
 
@@ -49,6 +51,18 @@ public class BlogDaoImpl implements BlogDao {
 	public List<Comment> getAllComments(int blogId) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public List<Blog> getBlogs(PagingConfig paging) {
+		EntityManager entityManager = PersistenceUtil.getEntityManager();
+		Query query = entityManager.createQuery("SELECT b from Blog b");
+		
+		query.setMaxResults(paging.getLimit() - paging.getOffset());
+		query.setFirstResult(paging.getOffset());
+		
+		List<Blog> blogList = query.getResultList();
+		return blogList;
 	}
 
 }

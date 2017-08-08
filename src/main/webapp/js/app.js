@@ -25,9 +25,77 @@ $(document).ready(function () {
             var x = event.keyCode;
 
             if (x == 13) { // 13 is the ENTER key
-                loadBlogListPage();
+                loadBlogListPage($("#search-box")[0].value);
             }
         });
+
+        $("#signInForm button[type=submit]").on("click", function () {
+            var url = "/blogitaway/rest/user/login"
+            var userName = $("#signInForm input[id=username]").val()
+            var password = $("#signInForm input[id=pwd]").val()
+            var user = {
+                "userName": userName,
+                "password": password
+            }
+            $.ajax({
+                url: url,
+                type: 'post',
+                data: JSON.stringify(user),
+                contentType: "application/json",
+                success: function (result) {
+                    alert(result);
+                },
+                error: function (xhr) {
+                    alert(xhr.status + " " + xhr.statusText);
+                }
+            })
+
+        })
+
+        $("#signUpForm button[type=submit]").on("click", function () {
+            var url = "/blogitaway/rest/user/"
+            var userName = $("#signUpForm input[id=username]").val()
+            var password = $("#signUpForm input[id=pwd]").val()
+            var user = {
+                "userName": userName,
+                "password": password
+            }
+            $.ajax({
+                url: url,
+                type: 'post',
+                data: JSON.stringify(user),
+                contentType: "application/json",
+                success: function (result) {
+                    alert(result);
+                },
+                error: function (xhr) {
+                    alert(xhr.status + " " + xhr.statusText);
+                }
+            })
+
+        })
+        $("#newBlogDialog button[type=submit]").on("click", function () {
+            var url = "/blogitaway/rest/blog/"
+            var title = $("#newBlogDialog input[id=title]").val()
+            var content = tinymce.activeEditor.getContent();
+            var blog = {
+                "title": title,
+                "content": content
+            }
+            $.ajax({
+                url: url,
+                type: 'post',
+                data: JSON.stringify(blog),
+                contentType: "application/json",
+                success: function (result) {
+                    alert(result);
+                },
+                error: function (xhr) {
+                    alert(xhr.status + " " + xhr.statusText);
+                }
+            })
+
+        })
     };
 
     var elemetId = function (value) {
@@ -76,91 +144,67 @@ $(document).ready(function () {
         }
     }
 
-    var blogs = [
-        {
-            id: 1,
-            title: 'Blog 1 Title',
-            content: 'Blog 1 content Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Nam liber [...]',
+    var services = {
+        getBlogs: function (offset, limit, success) {
+            callRest("/blogitaway/rest/blog?offset=" + offset + "&limit=" + limit, "get", success, function (xhr) {
+                alert(xhr.status + " " + xhr.statusText);
+            })
+        },
 
-            owner: {
-                emailAddress: 'harish@gmail.com',
+        searchBlogs: function (query, offset, limit, success) {
+            if (query) {
+                callRest("/blogitaway/rest/blog/search?offset=" + offset + "&limit=" + limit + "&query=" + query, "get", success, function (xhr) {
+                    alert(xhr.status + " " + xhr.statusText);
+                })
             }
         },
-        {
-            id: 2,
-            title: 'Blog 1 Title',
-            content: 'Blog 1 content Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Nam liber [...]',
 
-            owner: {
-                emailAddress: 'harish@gmail.com',
-            }
-        },
-        {
-            id: 3,
-            title: 'Blog 1 Title',
-            content: 'Blog 1 content Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Nam liber [...]',
-
-            owner: {
-                emailAddress: 'harish@gmail.com',
-            }
-        },
-        {
-            id: 4,
-            title: 'Blog 1 Title',
-            content: 'Blog 1 content Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Nam liber [...]',
-
-            owner: {
-                emailAddress: 'harish@gmail.com',
-            }
-        },
-        {
-            id: 5,
-            title: 'Blog 1 Title',
-            content: 'Blog 1 content Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Nam liber [...]',
-
-            owner: {
-                emailAddress: 'harish@gmail.com',
-            }
-        },
-        {
-            id: 6,
-            title: 'Blog 1 Title',
-            content: 'Blog 1 content Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Nam liber [...]',
-
-            owner: {
-                emailAddress: 'harish@gmail.com',
-            }
-        },
-        {
-            id: 7,
-            title: 'Blog 1 Title',
-            content: 'Blog 1 content Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Nam liber [...]',
-
-            owner: {
-                emailAddress: 'harish@gmail.com',
+        getBlog: function (blogId, success) {
+            if (blogId) {
+                callRest("/blogitaway/rest/blog/" + blogId, "get", success, function (xhr) {
+                    alert(xhr.status + " " + xhr.statusText);
+                })
             }
         }
-    ];
 
+    };
+
+    var callRest = function (url, type, success, error) {
+        $.ajax({
+            url: url,
+            type: type,
+            contentType: "application/json",
+            success: success,
+            error: error
+        })
+    };
 
     var loadHomePage = function () {
         showPage(pages.homePage);
 
-        $("#homepage-blogItemsContainer").loadTemplate("templates/blogitem.html", blogs, {
-            afterInsert: addClickHandlerToBlogItems(blogs)
+        services.getBlogs(0, 15, function (result) {
+            $("#homepage-blogItemsContainer").loadTemplate("templates/blogitem.html", result, {
+                afterInsert: addClickHandlerToBlogItems(result)
+            });
         });
     };
 
-    var loadBlogListPage = function () {
+    var loadBlogListPage = function (query) {
         showPage(pages.blogsListPage);
 
-        $("#homepage-blogItemsContainer").loadTemplate("templates/blogitem.html", blogs);
-
-        addClickHandlerToBlogItems(blogs);
+        services.searchBlogs(query, 0, 15, function (result) {
+            $("#blog-list-page-blogItemsContainer").loadTemplate("templates/blogitem.html", result, {
+                afterInsert: addClickHandlerToBlogItems(result)
+            });
+        });
     };
 
     var loadBlogDetailsPage = function (blog) {
         showPage(pages.blogDetailsPage);
+
+        services.getBlog(blog.id, function (result) {
+            $("#blogdetails-contentContainer").loadTemplate("templates/blogdetail.html", result);
+        });
     };
 
     initialize();
