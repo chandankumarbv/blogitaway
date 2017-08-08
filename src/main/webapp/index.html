@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
-    <title>Home | Triangle</title>
+    <title>Blogitaway</title>
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/font-awesome.min.css" rel="stylesheet">
     <link href="css/animate.min.css" rel="stylesheet">
@@ -83,7 +83,7 @@
                         <div class="slide-text">
                             <h1>We Are Creative Nerds</h1>
                             <p>Boudin doner frankfurter pig. Cow shank bresaola pork loin tri-tip tongue venison pork belly meatloaf short loin landjaeger biltong beef ribs shankle chicken andouille.</p>
-                            <a href="#" class="btn btn-common">SIGN UP</a>&nbsp;&nbsp;<a href="#" class="btn btn-common">SIGN IN</a>
+                            <a href="#" class="btn btn-common" data-toggle="modal" data-target="#signUpDialog">SIGN UP</a>&nbsp;&nbsp;<a href="#" data-toggle="modal" data-target="#signInDialog" class="btn btn-common">SIGN IN</a>
                         </div>
                         <img src="images/home/slider/slide1/house.png" class="img-responsive slider-house" alt="slider image">
                         <img src="images/home/slider/slide1/circle1.png" class="slider-circle1" alt="slider image">
@@ -97,6 +97,66 @@
                 </div>
                 <div class="preloader"><i class="fa fa-sun-o fa-spin"></i></div>
             </section>
+		 	<div id="signInDialog" class="modal fade" role="dialog">
+			  <div class="modal-dialog">
+			
+			    <!-- Modal content-->
+			    <div class="modal-content">
+			      <div class="modal-header">
+			        <button type="button" class="close" data-dismiss="modal">&times;</button>
+			        <h4 class="modal-title">Sign In</h4>
+			      </div>
+			      <div class="modal-body">
+					<form id="signInForm">
+					  <div class="form-group">
+					    <label for="username">Username:</label>
+					    <input type="text" class="form-control" id="username">
+					  </div>
+					  <div class="form-group">
+					    <label for="pwd">Password:</label>
+					    <input type="password" class="form-control" id="pwd">
+					  </div>
+					  <div class="checkbox">
+					    <label><input type="checkbox"> Remember me</label>
+					  </div>
+					  <button type="submit" data-dismiss="modal" class="btn btn-default">Submit</button>
+					</form>      
+				</div>
+		 		</div>
+			
+			  </div>
+			</div>
+		 	<div id="signUpDialog" class="modal fade" role="dialog">
+			  <div class="modal-dialog">
+			
+			    <!-- Modal content-->
+			    <div class="modal-content">
+			      <div class="modal-header">
+			        <button type="button" class="close" data-dismiss="modal">&times;</button>
+			        <h4 class="modal-title">Sign Up</h4>
+			      </div>
+			      <div class="modal-body">
+					<form id="signinForm">
+					  <div class="form-group">
+					    <label for="username">Username:</label>
+					    <input type="text" class="form-control" id="username">
+					  </div>
+					  <div class="form-group">
+					    <label for="pwd">Password:</label>
+					    <input type="password" class="form-control" id="pwd">
+					  </div>
+					  <div class="form-group">
+					    <label for="pwd">Confirm Password:</label>
+					    <input type="password" class="form-control" id="pwd">
+					  </div>
+					  <button type="submit" data-dismiss="modal" class="btn btn-default">Submit</button>
+					</form>      
+				</div>
+		 		</div>
+			
+			  </div>
+			</div>
+
             <!--/#home-slider-->
 
             <section id="services">
@@ -419,6 +479,33 @@
     <script type="text/javascript" src="js/main.js"></script>
     <script type="text/javascript" src="js/jquery.loadTemplate.min.js"></script>
     <script type="text/javascript" src="js/app.js"></script>
+    <script type="text/javascript">
+/*     $("#signInForm").submit(function(){
+    		alert("test");
+    })
+ */
+ $("#signInForm button[type=submit]").on("click",function(){
+		var url = "/blogitaway/rest/user/login"
+		var userName = $("#signInForm input[id=username]").val()
+		var password = $("#signInForm input[id=pwd]").val()
+		var user = {"userName":userName,"password":password}
+	 $.ajax({
+			url:url,
+			type:'post',
+			data:user,
+			contentType:"application/json",
+		    dataType: "json",
+			success:function(result){
+				alert(result);
+			},
+	 		error:function(xhr){
+	 			alert(xhr.status+" "+xhr.statusText);
+	 		}
+		})
+
+ })
+
+ </script>
 </body>
 
 </html>
