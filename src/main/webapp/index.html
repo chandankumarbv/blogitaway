@@ -136,7 +136,7 @@
 			        <h4 class="modal-title">Sign Up</h4>
 			      </div>
 			      <div class="modal-body">
-					<form id="signinForm">
+					<form id="signUpForm">
 					  <div class="form-group">
 					    <label for="username">Username:</label>
 					    <input type="text" class="form-control" id="username">
@@ -505,6 +505,26 @@
 
  })
 
+ $("#signUpForm button[type=submit]").on("click",function(){
+		var url = "/blogitaway/rest/user/"
+		var userName = $("#signUpForm input[id=username]").val()
+		var password = $("#signUpForm input[id=pwd]").val()
+		var user = {"userName":userName,"password":password}
+	 $.ajax({
+			url:url,
+			type:'post',
+			data:JSON.stringify(user),
+			contentType:"application/json",
+		    dataType: "json",
+			success:function(result){
+				alert(result);
+			},
+	 		error:function(xhr){
+	 			alert(xhr.status+" "+xhr.statusText);
+	 		}
+		})
+
+ })
  </script>
 </body>
 
