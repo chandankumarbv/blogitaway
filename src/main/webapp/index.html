@@ -492,7 +492,7 @@
 	 $.ajax({
 			url:url,
 			type:'post',
-			data:user,
+			data:JSON.stringify(user),
 			contentType:"application/json",
 		    dataType: "json",
 			success:function(result){
