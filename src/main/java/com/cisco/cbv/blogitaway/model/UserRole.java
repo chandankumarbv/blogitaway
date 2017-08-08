@@ -1,12 +1,14 @@
 package com.cisco.cbv.blogitaway.model;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 @Entity
 public class UserRole {
 
 	@Id
+	@GeneratedValue
 	private int id;
 	private String role;
 

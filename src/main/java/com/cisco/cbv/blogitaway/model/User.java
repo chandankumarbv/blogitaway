@@ -14,7 +14,7 @@ public class User {
 	private String userName;
 	@ManyToOne(cascade = CascadeType.ALL)
 	private UserRole role;
-	@OneToMany
+	@OneToMany(cascade=CascadeType.ALL)
 	private List<Blog> blogList;
 	private String password;
 	private String emailAddress;

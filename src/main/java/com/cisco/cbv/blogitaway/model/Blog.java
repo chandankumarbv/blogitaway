@@ -2,7 +2,9 @@ package com.cisco.cbv.blogitaway.model;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
@@ -12,15 +14,16 @@ import javax.persistence.OneToMany;
 public class Blog {
 
 	@Id
+	@GeneratedValue
 	private int id;
 	private String title;
 	private String content;
 	private String createdAt;
-	@ManyToOne
+	@ManyToOne(cascade=CascadeType.ALL)
 	private User owner;
-	@OneToMany
+	@OneToMany(cascade=CascadeType.ALL)
 	private List<Comment> comments;
-	@OneToMany
+	@OneToMany(cascade=CascadeType.ALL)
 	private List<Tag> tags;
 	private int votes;
 	private boolean reportAbuse;
