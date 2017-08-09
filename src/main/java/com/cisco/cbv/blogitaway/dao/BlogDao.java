@@ -18,4 +18,6 @@ public interface BlogDao {
 	public List<Comment> getAllComments(int blogId);
 	
 	public List<Blog> getBlogs(PagingConfig paging);
+
+	public List<Blog> searchBlogs(PagingConfig pagingConfig, String query);
 }

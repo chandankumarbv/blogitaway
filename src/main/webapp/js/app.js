@@ -44,6 +44,8 @@ $(document).ready(function () {
                 contentType: "application/json",
                 success: function (result) {
                     alert(result);
+	    				saveToken(result);
+	    				saveCurrentUser(userName);
                 },
                 error: function (xhr) {
                     alert(xhr.status + " " + xhr.statusText);
@@ -67,6 +69,8 @@ $(document).ready(function () {
                 contentType: "application/json",
                 success: function (result) {
                     alert(result);
+	    				saveToken(result);
+	    				saveCurrentUser(userName);
                 },
                 error: function (xhr) {
                     alert(xhr.status + " " + xhr.statusText);
@@ -74,28 +78,33 @@ $(document).ready(function () {
             })
 
         })
-        $("#newBlogDialog button[type=submit]").on("click", function () {
-            var url = "/blogitaway/rest/blog/"
-            var title = $("#newBlogDialog input[id=title]").val()
-            var content = tinymce.activeEditor.getContent();
-            var blog = {
-                "title": title,
-                "content": content
-            }
-            $.ajax({
-                url: url,
-                type: 'post',
-                data: JSON.stringify(blog),
-                contentType: "application/json",
-                success: function (result) {
-                    alert(result);
-                },
-                error: function (xhr) {
-                    alert(xhr.status + " " + xhr.statusText);
-                }
-            })
-
-        })
+        $("#newBlogDialog button[type=submit]").on("click",function(){
+		var url = "/blogitaway/rest/blog/"
+		var title = $("#newBlogDialog input[id=title]").val()
+		var content = tinymce.activeEditor.getContent();
+		var user = getUser();
+		var blog = {"title":title,"owner":{"userName":user}, "content":content}
+		postWithAuth(url,blog,function(result){
+			loadHomePage();
+		},
+		function(xhr){
+ 			alert(xhr.status+" "+xhr.statusText);
+ 		}
+		)
+/* 		$.ajax({
+			url:url,
+			type:'post',
+			data:JSON.stringify(blog),
+			contentType:"application/json",
+			success:function(result){
+				alert(result);
+			},
+	 		error:function(xhr){
+	 			alert(xhr.status+" "+xhr.statusText);
+	 		}
+		})
+ */
+          })
     };
 
     var elemetId = function (value) {
@@ -206,6 +215,41 @@ $(document).ready(function () {
             $("#blogdetails-contentContainer").loadTemplate("templates/blogdetail.html", result);
         });
     };
+    
+    function postWithAuth(url,postData,successFn,errorFn){
+    	var authToken = localStorage.getItem("token")
+    	var authHeader = null;
+    	if(authToken != null){
+    		authHeader = { "Authorization": "Bearer " + authToken}
+    	}
+    	 $.ajax({
+    			url:url,
+    			type:'post',
+    			headers: authHeader,
+    			data:JSON.stringify(postData),
+    			contentType:"application/json",
+    			success:successFn,
+    	 		error:errorFn
+    		})
+    }
+
+    function saveToken(token){
+    	if(token != null){
+    		localStorage.setItem("token",token);
+    	}
+    }
+    function saveCurrentUser(user){
+    	if(user != null){
+    		localStorage.setItem("user",user);
+    	}
+    }
+    function clearStorage(){
+    	localStorage.removeItem("token");
+    	localStorage.removeItem("user");
+    }
+    function getUser(){
+    	return localStorage.getItem("user");
+    }
 
     initialize();
     loadHomePage();

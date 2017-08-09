@@ -9,6 +9,7 @@ import javax.persistence.Query;
 import com.cisco.cbv.blogitaway.model.Blog;
 import com.cisco.cbv.blogitaway.model.Comment;
 import com.cisco.cbv.blogitaway.model.PagingConfig;
+import com.cisco.cbv.blogitaway.model.User;
 
 public class BlogDaoImpl implements BlogDao {
 
@@ -27,6 +28,11 @@ public class BlogDaoImpl implements BlogDao {
 	@Override
 	public void create(Blog blog) {
 		EntityManager entityManager = PersistenceUtil.getEntityManager();
+		User owner = blog.getOwner();
+		if(owner!=null && owner.getUserName()!=null) {
+			User managedUser = entityManager.find(User.class, owner.getUserName());
+			blog.setOwner(managedUser);
+		}
 		entityManager.getTransaction().begin();
 		entityManager.persist(blog);
 		entityManager.getTransaction().commit();
@@ -60,6 +66,18 @@ public class BlogDaoImpl implements BlogDao {
 		
 		query.setMaxResults(paging.getLimit() - paging.getOffset());
 		query.setFirstResult(paging.getOffset());
+		
+		List<Blog> blogList = query.getResultList();
+		return blogList;
+	}
+
+	@Override
+	public List<Blog> searchBlogs(PagingConfig pagingConfig, String searchString) {
+		EntityManager entityManager = PersistenceUtil.getEntityManager();
+		Query query = entityManager.createQuery("SELECT b from Blog b WHERE b.content LIKE :searchString");
+		query.setParameter("searchString", "%"+searchString+"%");
+		query.setMaxResults(pagingConfig.getLimit() - pagingConfig.getOffset());
+		query.setFirstResult(pagingConfig.getOffset());
 		
 		List<Blog> blogList = query.getResultList();
 		return blogList;

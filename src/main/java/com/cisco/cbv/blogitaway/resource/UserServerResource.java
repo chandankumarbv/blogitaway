@@ -38,10 +38,11 @@ public class UserServerResource {
 
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response createUser(User user) throws NoSuchAlgorithmException {
+	public Response createUser(User user) throws NoSuchAlgorithmException, IllegalArgumentException, UnsupportedEncodingException {
 
 		UserDaoImpl.getInstance().create(user);
-		return Response.created(URI.create("/" + user.getUserName())).build();
+		String token = TokenUtil.issueAndStoreToken(user.getUserName());
+		return Response.ok().entity(token).build();
 	}
 
 	@GET
@@ -74,14 +75,7 @@ public class UserServerResource {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response loginUser(User user) throws IllegalArgumentException, UnsupportedEncodingException {
 		if (UserDaoImpl.getInstance().authenticate(user)) {
-			String token = AuthUtil.issueToken(user.getUserName());
-			JWTToken jwtToken = TokenDaoImpl.getInstance().read(user.getUserName());
-			if (jwtToken != null) {
-				jwtToken.setToken(token);
-				TokenDaoImpl.getInstance().update(jwtToken);
-			} else {
-				TokenDaoImpl.getInstance().store(user.getUserName(), token);
-			}
+			String token = TokenUtil.issueAndStoreToken(user.getUserName());
 			return Response.ok().entity(token).build();
 		} else {
 			return Response.status(401).entity("Authentication Failed.").build();

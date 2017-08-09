@@ -33,34 +33,15 @@ public class BlogServerResource {
 		paging.setLimit(limit);
 		paging.setOffset(offset);
 		
-		
-		
-		List<Blog> allBlogs = new ArrayList<>();
-		
-		for(int i = 0; i< 30; i++){
-			Blog e = new Blog();
-			e.setId(i);
-			
-			User user = new User();
-			user.setUserName("User" + i);
-			user.setEmailAddress("user" + i + "@email.com");
-			
-			e.setOwner(user);
-			
-			e.setContent("Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Nam liber [...]");
-			e.setTitle("Advanced business cards design " + i);
-			
-			allBlogs.add(e);
-		}
-		
-//				blogService.getBlogs(paging);
-		return Response.ok().entity(allBlogs).build();
+		List<Blog> blogs = blogService.getBlogs(paging);
+		return Response.ok().entity(blogs).build();
 	}
 
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response postBlog(Blog blog) {
+		BlogDaoImpl.getInstance().create(blog);
 		return Response.ok().build();
 	}
 
@@ -69,45 +50,19 @@ public class BlogServerResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response searchBlogs(@QueryParam("limit") int limit, @QueryParam("offset") int offset,
 			@QueryParam("query") String query) {
-		List<Blog> allBlogs = new ArrayList<>();
-		
-		for(int i = 0; i< 30; i++){
-			Blog e = new Blog();
-			e.setId(i);
-			
-			User user = new User();
-			user.setUserName("User" + i);
-			user.setEmailAddress("user" + i + "@email.com");
-			
-			e.setOwner(user);
-			
-			e.setContent("Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Nam liber [...]"
-					+ "<b>Resrresers</b>");
-			e.setTitle("Advanced business cards design " + i);
-			
-			allBlogs.add(e);
-		}
-		
-		return Response.ok().entity(allBlogs).build();
+		PagingConfig paging = new PagingConfig();
+		paging.setLimit(limit);
+		paging.setOffset(offset);
+		List<Blog> searchResult = blogService.searchBlogs(paging, query);
+		return Response.ok().entity(searchResult).build();
 	}
 
 	@GET
 	@Path("{blog_id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getSpecificBlog(@PathParam("blog_id") int blogId) {
-		Blog e = new Blog();
-		e.setId(blogId);
-		
-		User user = new User();
-		user.setUserName("User" + blogId);
-		user.setEmailAddress("user" + blogId + "@email.com");
-		
-		e.setOwner(user);
-		
-		e.setContent("Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Nam liber [...]");
-		e.setTitle("Advanced business cards design " + blogId);
-		
-		return Response.ok().entity(e).build();
+	public Response getSpecificBlog(@PathParam("blog_id") int blogId) {		
+		Blog blog = BlogDaoImpl.getInstance().read(blogId);
+		return Response.ok().entity(blog).build();
 	}
 
 	@POST

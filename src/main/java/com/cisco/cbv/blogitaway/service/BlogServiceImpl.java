@@ -33,7 +33,7 @@ public class BlogServiceImpl implements BlogService{
 	@Override
 	public List<Blog> searchBlogs(PagingConfig pagingConfig, String query)
 			throws NoBlogsFoundException, InvalidValueException, BlogitAwayException {
-		return null;
+		return blogDao.searchBlogs(pagingConfig, query);
 	}
 
 	@Override
