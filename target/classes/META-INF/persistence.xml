@@ -4,7 +4,7 @@
 
 	<persistence-unit name="blogitaway">
 		<properties>
-			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost/blogitaway"></property>
+			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://db/blogitaway"></property>
 			<property name="javax.persistence.jdbc.user" value="root"></property>
 			<property name="javax.persistence.jdbc.password" value="admin"></property>
 			<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"></property>
