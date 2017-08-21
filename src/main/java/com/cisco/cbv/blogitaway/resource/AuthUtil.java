@@ -41,18 +41,19 @@ public class AuthUtil {
 			JWTVerifier verifier = JWT.require(algorithm).withIssuer(ISSUER).acceptIssuedAt(0).acceptExpiresAt(0)
 					.build();
 			DecodedJWT decodedToken = verifier.verify(token);
-			Claim userNameClaim = decodedToken.getClaim("user");
-			if (userNameClaim != null && userNameClaim.asString() != null) {
-				String userName = userNameClaim.asString();
-				JWTToken tokenFromDb = TokenDaoImpl.getInstance().read(userName);
-				if (tokenFromDb!=null && tokenFromDb.getToken().equals(token)) {
-					return true;
-				}
-			}
+			//TODO: implement refresh token mech.
+//			Claim userNameClaim = decodedToken.getClaim("user");
+//			if (userNameClaim != null && userNameClaim.asString() != null) {
+//				String userName = userNameClaim.asString();
+//				JWTToken tokenFromDb = TokenDaoImpl.getInstance().read(userName);
+//				if (tokenFromDb!=null && tokenFromDb.getToken().equals(token)) {
+//					return true;
+//				}
+//			}
+			return true;
 		} catch (IllegalArgumentException | UnsupportedEncodingException | JWTVerificationException e) {
 			e.printStackTrace();
 			return false;
 		}
-		return false;
 	}
 }

@@ -7,13 +7,13 @@ public class TokenUtil {
 
 	public static String issueAndStoreToken(String userName) {
 		String token = AuthUtil.issueToken(userName);
-		JWTToken jwtToken = TokenDaoImpl.getInstance().read(userName);
-		if (jwtToken != null) {
-			jwtToken.setToken(token);
-			TokenDaoImpl.getInstance().update(jwtToken);
-		} else {
-			TokenDaoImpl.getInstance().store(userName, token);
-		}
+//		JWTToken jwtToken = TokenDaoImpl.getInstance().read(userName);
+//		if (jwtToken != null) {
+//			jwtToken.setToken(token);
+//			TokenDaoImpl.getInstance().update(jwtToken);
+//		} else {
+//			TokenDaoImpl.getInstance().store(userName, token);
+//		}
 		return token;
 	}
 }

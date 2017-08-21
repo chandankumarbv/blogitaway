@@ -1,21 +1,17 @@
 package com.cisco.cbv.blogitaway.model;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+import org.mongodb.morphia.annotations.Entity;
+import org.mongodb.morphia.annotations.Id;
+import org.mongodb.morphia.annotations.Reference;
 
 @Entity
 public class Comment {
 
 	@Id
-	@GeneratedValue
 	private int commentId;
-	@OneToOne
+	@Reference
 	private User owner;
-	@ManyToOne(cascade=CascadeType.ALL)
+	@Reference
 	private Blog blog;
 	private String createdAt;
 	private int votes;

@@ -1,18 +1,21 @@
 package com.cisco.cbv.blogitaway.dao;
 
-import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
+import org.mongodb.morphia.dao.BasicDAO;
+import org.mongodb.morphia.query.QueryResults;
+
 import com.cisco.cbv.blogitaway.model.User;
 
-public class UserDaoImpl implements UserDao {
+public class UserDaoImpl extends BasicDAO<User, String> implements UserDao {
 	private static UserDaoImpl instance;
 
 	private UserDaoImpl() {
+		super(User.class,PersistenceUtil.getDataStore());
 	}
 
 	public static UserDao getInstance() {
@@ -24,11 +27,8 @@ public class UserDaoImpl implements UserDao {
 
 	@Override
 	public void create(User user) throws NoSuchAlgorithmException {
-		EntityManager entityManager = PersistenceUtil.getEntityManager();
 		encryptPasswd(user);
-		entityManager.getTransaction().begin();
-		entityManager.persist(user);
-		entityManager.getTransaction().commit();
+		save(user);
 	}
 
 	private void encryptPasswd(User user) throws NoSuchAlgorithmException {
@@ -48,21 +48,18 @@ public class UserDaoImpl implements UserDao {
 
 	@Override
 	public User read(String userName) {
-		EntityManager entityManager = PersistenceUtil.getEntityManager();
-		User user = entityManager.find(User.class, userName);
-		return user;
+		return get(userName);
 	}
 
 	@Override
 	public List<User> getAllUsers() {
-		EntityManager entityManager = PersistenceUtil.getEntityManager();
-		Query query = entityManager.createQuery("SELECT u from User u");
-		List<User> userList = query.getResultList();
-		return userList;
+		QueryResults<User> results = find();
+		return results.asList();
 	}
 
 	@Override
 	public User updateUser(String userName, User user) {
+		
 		EntityManager entityManager = PersistenceUtil.getEntityManager();
 		User managedUser = entityManager.find(User.class, userName);
 		if (user.getAddress() != null) {

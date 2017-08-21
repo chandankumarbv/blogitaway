@@ -2,19 +2,16 @@ package com.cisco.cbv.blogitaway.model;
 
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import org.mongodb.morphia.annotations.Entity;
+import org.mongodb.morphia.annotations.Id;
+import org.mongodb.morphia.annotations.Reference;
 
 @Entity
 public class User {
 	@Id
 	private String userName;
-	@ManyToOne(cascade = CascadeType.ALL)
 	private UserRole role;
-	@OneToMany(cascade=CascadeType.ALL)
+	@Reference
 	private List<Blog> blogList;
 	private String password;
 	private String emailAddress;

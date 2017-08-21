@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.cisco.cbv.blogitaway.dao.BlogDao;
 import com.cisco.cbv.blogitaway.dao.BlogDaoImpl;
+import com.cisco.cbv.blogitaway.dao.BlogDaoMongoImpl;
 import com.cisco.cbv.blogitaway.model.Blog;
 import com.cisco.cbv.blogitaway.model.BlogNotFoundException;
 import com.cisco.cbv.blogitaway.model.BlogitAwayException;
@@ -16,8 +17,8 @@ import com.cisco.cbv.blogitaway.model.NoBlogsFoundException;
 import com.cisco.cbv.blogitaway.model.NoCommentsFoundException;
 import com.cisco.cbv.blogitaway.model.PagingConfig;
 
-public class BlogServiceImpl implements BlogService{
-	private BlogDao blogDao = BlogDaoImpl.getInstance();
+public class BlogServiceImpl implements BlogService {
+	private BlogDao blogDao = BlogDaoMongoImpl.getInstance();
 
 	@Override
 	public List<Blog> getBlogs(PagingConfig pagingConfig)
@@ -26,8 +27,8 @@ public class BlogServiceImpl implements BlogService{
 	}
 
 	@Override
-	public Blog postBlog(Blog blog) throws InvalidBlogException, BlogitAwayException {
-		return null;
+	public void postBlog(Blog blog) throws InvalidBlogException, BlogitAwayException {
+		blogDao.create(blog);
 	}
 
 	@Override
@@ -37,8 +38,8 @@ public class BlogServiceImpl implements BlogService{
 	}
 
 	@Override
-	public Blog getSpecificBlog(int blogId) throws BlogNotFoundException, BlogitAwayException {
-		return null;
+	public Blog getSpecificBlog(String blogId) throws BlogNotFoundException, BlogitAwayException {
+		return blogDao.read(blogId);
 	}
 
 	@Override

@@ -41,7 +41,7 @@ public class BlogServerResource {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response postBlog(Blog blog) {
-		BlogDaoImpl.getInstance().create(blog);
+		blogService.postBlog(blog);
 		return Response.ok().build();
 	}
 
@@ -60,8 +60,8 @@ public class BlogServerResource {
 	@GET
 	@Path("{blog_id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getSpecificBlog(@PathParam("blog_id") int blogId) {		
-		Blog blog = BlogDaoImpl.getInstance().read(blogId);
+	public Response getSpecificBlog(@PathParam("blog_id") String blogId) {		
+		Blog blog = blogService.getSpecificBlog(blogId);
 		return Response.ok().entity(blog).build();
 	}
 

@@ -17,11 +17,11 @@ import com.cisco.cbv.blogitaway.model.PagingConfig;
 public interface BlogService {
 	List<Blog> getBlogs(PagingConfig pagingConfig) throws NoBlogsFoundException, InvalidValueException, BlogitAwayException;
 
-	Blog postBlog(Blog blog) throws InvalidBlogException, BlogitAwayException;
+	void postBlog(Blog blog) throws InvalidBlogException, BlogitAwayException;
 	
 	List<Blog> searchBlogs(PagingConfig pagingConfig, String query) throws NoBlogsFoundException, InvalidValueException, BlogitAwayException;
 
-	Blog getSpecificBlog(int blogId) throws BlogNotFoundException, BlogitAwayException;
+	Blog getSpecificBlog(String blogId) throws BlogNotFoundException, BlogitAwayException;
 
 	void publishBlog(int blogId) throws BlogNotFoundException, BlogitAwayException;
 	

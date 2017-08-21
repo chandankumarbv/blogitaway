@@ -10,7 +10,10 @@ import com.cisco.cbv.blogitaway.model.PagingConfig;
 public interface BlogDao {
 	public void create(Blog blog);
 
+	@Deprecated
 	public Blog read(int blogId);
+
+	public Blog read(String blogId);
 	
 	public List<Blog> getAllBlogs();
 	

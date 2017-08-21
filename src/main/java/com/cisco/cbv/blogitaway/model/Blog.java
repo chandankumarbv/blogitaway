@@ -2,40 +2,34 @@ package com.cisco.cbv.blogitaway.model;
 
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Lob;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import org.mongodb.morphia.annotations.Entity;
+import org.mongodb.morphia.annotations.Id;
+import org.mongodb.morphia.annotations.Reference;
+
 
 @Entity
 public class Blog {
 
 	@Id
-	@GeneratedValue
-	private int id;
+	private String id;
 	private String title;
-	@Lob
 	private String content;
 	private String createdAt;
-	@ManyToOne(cascade=CascadeType.ALL)
+	@Reference
 	private User owner;
-	@OneToMany(cascade=CascadeType.ALL)
+	@Reference
 	private List<Comment> comments;
-	@OneToMany(cascade=CascadeType.ALL)
+	@Reference
 	private List<Tag> tags;
 	private int votes;
 	private boolean reportAbuse;
 	private boolean published;
 
-	public int getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 

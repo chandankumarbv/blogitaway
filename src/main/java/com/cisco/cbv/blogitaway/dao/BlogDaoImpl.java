@@ -83,4 +83,10 @@ public class BlogDaoImpl implements BlogDao {
 		return blogList;
 	}
 
+	@Override
+	public Blog read(String blogId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
