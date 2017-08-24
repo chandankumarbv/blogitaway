@@ -1,0 +1,116 @@
+import React from 'react';
+import PageHeader from './PageHeader.jsx';
+import PageFooter from './PageFooter.jsx';
+import HomePage from './HomePage.jsx';
+import BlogListPage from './BlogListPage.jsx';
+import BlogDetailPage from './BlogDetailPage.jsx';
+import * as Constants from './Constants.jsx';
+
+
+class App extends React.Component {
+    constructor(props){
+        super(props);
+        this.state = {
+            page: Constants.Pages.HOME,
+            loggedIn: false,
+            loggedInUserDetails: null,
+            params: null
+        };
+
+		this.goToPage = this.goToPage.bind(this);
+		this.goToHomePage = this.goToHomePage.bind(this);
+		this.goToBlogListPage = this.goToBlogListPage.bind(this);
+		this.goToBlogDetailPage = this.goToBlogDetailPage.bind(this);
+		this.goToUserProfilePage = this.goToUserProfilePage.bind(this);
+		this.goToLoginPage = this.goToLoginPage.bind(this);
+		this.goToSignUpPage = this.goToSignUpPage.bind(this);
+		this.onLogin = this.onLogin.bind(this);
+		this.logout = this.logout.bind(this);
+		this.onSearch = this.onSearch.bind(this);
+    }
+
+    goToPage(page, params){
+        this.setState(
+        {
+            page: page, 
+            params: params
+        });
+    };
+
+    goToHomePage(){
+        this.goToPage(Constants.Pages.HOME, null);
+    };
+
+    goToBlogListPage(search){
+        this.goToPage(Constants.Pages.BLOG_LIST, {search: search});
+    };
+
+    goToBlogDetailPage(blogId){
+        this.goToPage(Constants.Pages.BLOG_DETAIL, {blogId: blogId});
+    };
+
+    goToUserProfilePage(userId){
+        this.goToPage(Constants.Pages.USER_PROFILE, {userId: userId});
+    };
+
+    goToLoginPage(){
+        this.goToPage(Constants.Pages.LOGIN, null);
+    };
+
+    goToSignUpPage(){
+        this.goToPage(Constants.Pages.SIGNUP, null);
+    };
+
+    onLogin(loggedInUserDetails){
+        this.setState(
+        {
+            page: Constants.Pages.HOME, 
+            params: null,
+            loggedInUserDetails: loggedInUserDetails,
+            loggedIn: true,
+        });
+    }
+
+    logout(){
+        this.setState(
+        {
+            page: Constants.Pages.HOME, 
+            params: null,
+            loggedInUserDetails: null,
+            loggedIn: false
+        });
+    };
+
+    getBodyComponent(page, params){
+        switch(page){
+            case Constants.Pages.BLOG_LIST:
+                return <BlogListPage onBlogItemClick={this.goToBlogDetailPage} userId={params.userId} searchText={params.searchText}/>;
+
+            case Constants.Pages.BLOG_DETAIL:
+                return <BlogDetailPage/>;
+
+            default:
+                return <HomePage onLogin={this.onLogin} onBlogItemClick={this.goToBlogDetailPage} loggedIn={this.state.loggedIn}/>;
+        }
+    };
+
+    onSearch(searchText){
+        if(searchText && searchText.trim() != ""){
+            this.goToBlogListPage(searchText);
+        }
+    };
+
+	render() {
+        let pageBody = this.getBodyComponent(this.state.page, this.state.params);
+
+	  	return (
+            <div>
+                <PageHeader logout={this.logout} loggedIn={this.state.loggedIn} onSearch={this.onSearch} onHomeClick={this.goToHomePage}></PageHeader>
+                {pageBody}
+                <PageFooter></PageFooter>
+            </div>
+	  	);
+	}
+}
+
+export default App;
