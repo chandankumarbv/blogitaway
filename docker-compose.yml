@@ -7,7 +7,6 @@ app:
     - 9999:8080
 
 db:
-  image: mysql
-  environment:
-    - MYSQL_ROOT_PASSWORD=admin
-    - MYSQL_DATABASE=blogitaway
+  image: mongo
+  ports:
+    - 27017:27017
