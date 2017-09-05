@@ -1,6 +1,8 @@
 FROM maven as build-stage
 WORKDIR /code
 COPY pom.xml /code/
+COPY package.json /code/
+COPY webpack.config.js /code/
 COPY src/main /code/src/main
 RUN mvn package
 
