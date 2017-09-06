@@ -33,5 +33,5 @@ artifacts:
 # Reason is pipeline does not untar and errors out saying that the appspec file is not there
     - appfiles/appspec.yml
     - appfiles/blogitaway.war
-    - appfiles/blogitaway.tar.gz
+    - target/blogitaway.tar.gz
   discard-paths: yes
