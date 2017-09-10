@@ -8,20 +8,21 @@ import org.mongodb.morphia.annotations.Reference;
 public class Comment {
 
 	@Id
-	private int commentId;
+	private String commentId;
 	@Reference
 	private User owner;
 	@Reference
 	private Blog blog;
+	private String content;
 	private String createdAt;
 	private int votes;
 	private boolean reportAbuse;
 
-	public int getCommentId() {
+	public String getCommentId() {
 		return commentId;
 	}
 
-	public void setCommentId(int commentId) {
+	public void setCommentId(String commentId) {
 		this.commentId = commentId;
 	}
 
@@ -63,6 +64,14 @@ public class Comment {
 
 	public void setReportAbuse(boolean reportAbuse) {
 		this.reportAbuse = reportAbuse;
+	}
+
+	public String getContent() {
+		return content;
+	}
+
+	public void setContent(String content) {
+		this.content = content;
 	}
 
 }

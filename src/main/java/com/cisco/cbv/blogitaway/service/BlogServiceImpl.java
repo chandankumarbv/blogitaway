@@ -3,8 +3,9 @@ package com.cisco.cbv.blogitaway.service;
 import java.util.List;
 
 import com.cisco.cbv.blogitaway.dao.BlogDao;
-import com.cisco.cbv.blogitaway.dao.BlogDaoImpl;
 import com.cisco.cbv.blogitaway.dao.BlogDaoMongoImpl;
+import com.cisco.cbv.blogitaway.dao.CommentDao;
+import com.cisco.cbv.blogitaway.dao.CommentDaoImpl;
 import com.cisco.cbv.blogitaway.model.Blog;
 import com.cisco.cbv.blogitaway.model.BlogNotFoundException;
 import com.cisco.cbv.blogitaway.model.BlogitAwayException;
@@ -19,6 +20,7 @@ import com.cisco.cbv.blogitaway.model.PagingConfig;
 
 public class BlogServiceImpl implements BlogService {
 	private BlogDao blogDao = BlogDaoMongoImpl.getInstance();
+	private CommentDao commentDao = CommentDaoImpl.getInstance();
 
 	@Override
 	public List<Blog> getBlogs(PagingConfig pagingConfig)
@@ -43,29 +45,25 @@ public class BlogServiceImpl implements BlogService {
 	}
 
 	@Override
-	public void publishBlog(int blogId) throws BlogNotFoundException, BlogitAwayException {
+	public void publishBlog(String blogId) throws BlogNotFoundException, BlogitAwayException {
 	}
 
 	@Override
-	public void deleteBlog(int blogId) throws BlogNotFoundException, BlogitAwayException {
-	}
-
-	@Override
-	public Comment postComment(int blogId, Comment comment)
+	public void postComment(Comment comment)
 			throws BlogNotFoundException, InvalidCommentException, BlogitAwayException {
-		return null;
+		commentDao.create(comment);
 	}
 
 	@Override
-	public List<Comment> getAllComments(int blogId, PagingConfig pagingConfig)
+	public List<Comment> getAllComments(String blogId, PagingConfig pagingConfig)
 			throws BlogNotFoundException, NoCommentsFoundException, BlogitAwayException {
-		return null;
+		return commentDao.readCommentsOfBlog(blogId);
 	}
 
 	@Override
-	public Comment getSpecificComment(int blogId, int commentId)
+	public Comment getSpecificComment(String commentId)
 			throws BlogNotFoundException, CommentNotFoundException, InvalidValueException, BlogitAwayException {
-		return null;
+		return commentDao.readComment(commentId);
 	}
 
 }

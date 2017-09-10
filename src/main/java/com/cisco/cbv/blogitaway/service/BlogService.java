@@ -23,13 +23,11 @@ public interface BlogService {
 
 	Blog getSpecificBlog(String blogId) throws BlogNotFoundException, BlogitAwayException;
 
-	void publishBlog(int blogId) throws BlogNotFoundException, BlogitAwayException;
+	void publishBlog(String blogId) throws BlogNotFoundException, BlogitAwayException;
+		
+	void postComment(Comment comment) throws BlogNotFoundException, InvalidCommentException, BlogitAwayException;
 	
-	void deleteBlog(int blogId) throws BlogNotFoundException, BlogitAwayException;
-	
-	Comment postComment(int blogId, Comment comment) throws BlogNotFoundException, InvalidCommentException, BlogitAwayException;
-	
-	List<Comment> getAllComments(int blogId, PagingConfig pagingConfig) throws BlogNotFoundException, NoCommentsFoundException, BlogitAwayException;
+	List<Comment> getAllComments(String blogId, PagingConfig pagingConfig) throws BlogNotFoundException, NoCommentsFoundException, BlogitAwayException;
 
-	Comment getSpecificComment(int blogId, int commentId) throws BlogNotFoundException, CommentNotFoundException, InvalidValueException, BlogitAwayException;
+	Comment getSpecificComment(String commentId) throws BlogNotFoundException, CommentNotFoundException, InvalidValueException, BlogitAwayException;
 }

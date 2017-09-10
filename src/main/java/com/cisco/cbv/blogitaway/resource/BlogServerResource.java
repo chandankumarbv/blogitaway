@@ -23,16 +23,17 @@ import com.cisco.cbv.blogitaway.service.BlogService;
 import com.cisco.cbv.blogitaway.service.BlogServiceImpl;
 
 @Path("/blog")
+@AuthorizationNeeded
 public class BlogServerResource {
 	private BlogService blogService = new BlogServiceImpl();
-	
+
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getBlogs(@QueryParam("limit") int limit, @QueryParam("offset") int offset) {
 		PagingConfig paging = new PagingConfig();
 		paging.setLimit(limit);
 		paging.setOffset(offset);
-		
+
 		List<Blog> blogs = blogService.getBlogs(paging);
 		return Response.ok().entity(blogs).build();
 	}
@@ -60,7 +61,7 @@ public class BlogServerResource {
 	@GET
 	@Path("{blog_id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getSpecificBlog(@PathParam("blog_id") String blogId) {		
+	public Response getSpecificBlog(@PathParam("blog_id") String blogId) {
 		Blog blog = blogService.getSpecificBlog(blogId);
 		return Response.ok().entity(blog).build();
 	}
@@ -81,51 +82,41 @@ public class BlogServerResource {
 
 	@POST
 	@Path("/{blog_id}/reportAbuse")
-	public Response reportAbuseForBlog(@PathParam("blog_id") int blogId) {
+	public Response reportAbuseForBlog(@PathParam("blog_id") String blogId) {
 		return Response.ok().build();
 	}
-
-	@DELETE
-	@Path("/{blog_id}")
-	public Response deleteBlog(@PathParam("blog_id") int blogId) {
-		return Response.ok().build();
-	}
-
-	// FIXME should comment resources be served as separate or as part of blog
-	// resource?
 
 	@POST
 	@Path("/{blog_id}/comment")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response postComment(@PathParam("blog_id") int blogId, Comment comment) {
+	public Response postComment(@PathParam("blog_id") String blogId, Comment comment) {
+		if (comment.getBlog() == null) {
+			Blog blog = new Blog();
+			blog.setId(blogId);
+			comment.setBlog(blog);
+		}
+		blogService.postComment(comment);
 		return Response.ok().build();
 	}
 
 	@GET
 	@Path("/{blog_id}/comment")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getAllComments(@PathParam("blog_id") int blogId) {
-		return Response.ok().build();
+	public Response getAllComments(@PathParam("blog_id") String blogId) {
+		return Response.ok().entity(blogService.getAllComments(blogId, null)).build();
 	}
 
 	@GET
 	@Path("{blog_id}/{comment_id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getSpecificComment(@PathParam("blog_id") int blogIdj, @PathParam("comment_id") int commentId) {
-		return Response.ok().build();
+	public Response getSpecificComment(@PathParam("blog_id") String blogId, @PathParam("comment_id") String commentId) {
+		return Response.ok().entity(blogService.getSpecificComment(commentId)).build();
 	}
 
 	@POST
 	@Path("/{blog_id}/{comment_id}/reportAbuse")
-	public Response reportAbuseForComment(@PathParam("blog_id") int blogId,
-			@PathParam("comment_id") int commentId) {
+	public Response reportAbuseForComment(@PathParam("blog_id") String blogId,
+			@PathParam("comment_id") String commentId) {
 		return Response.ok().build();
 	}
-
-	@DELETE
-	@Path("/{blog_id}/{comment_id}")
-	public Response deleteComment(@PathParam("blog_id") int blogId, @PathParam("comment_id") int commentId) {
-		return Response.ok().build();
-	}
-
 }
