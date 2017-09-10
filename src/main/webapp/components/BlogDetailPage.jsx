@@ -1,6 +1,34 @@
 import React from 'react';
+import axios from 'axios';
 
 class BlogDetailPage extends React.Component {
+    
+    constructor(props){
+        super(props);
+        this.state = {
+            blog: {
+                title: 'DefaultTitle',
+                owner: {
+                    emailAddress: 'defaultEmail'
+                },
+                content: 'DefaultContent'
+            }
+        };
+    }
+    
+    componentDidMount(){
+        // Make HTTP reques with Axios
+        axios.get("http://localhost:8585/blogitaway/rest/blog/" + this.props.blogId)
+          .then((res) => {
+            console.log(this.props.blogId);
+            console.log(res);
+            // Set state with result
+            this.setState({
+                blog : res.data
+            });
+          });
+    }
+    
 	render() {
 	  	return (
             <div id="blog-details-page-container">
@@ -15,12 +43,12 @@ class BlogDetailPage extends React.Component {
                                                 <span id="blogdetails-contentContainer">
                                                     <span>
                                                         <h2 className="post-title bold">
-                                                            <a href="#">Title</a>
+                                                            <a href="#">{this.state.blog.title}</a>
                                                         </h2>
                                                         <h3 className="post-author">
-                                                            <a href="#">Author</a>
+                                                            <a href="#">{this.state.blog.owner.emailAddress}</a>
                                                         </h3>
-                                                        <span>Content</span>
+                                                        <span>{this.state.blog.content}</span>
                                                     </span>
                                                 </span>
                                             </div>

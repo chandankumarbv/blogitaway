@@ -1,29 +1,30 @@
 {
-  "name": "blogitaway",
-  "version": "1.0.0",
-  "description": "Blogging web app",
-  "main": "index.js",
-  "scripts": {
-    "start": "webpack-dev-server --hot"
-  },
-  "author": "harish & chandan",
-  "license": "ISC",
-  "dependencies": {
-    "babel-core": "^6.26.0",
-    "babel-loader": "^7.1.2",
-    "babel-preset-es2015": "^6.24.1",
-    "babel-preset-react": "^6.24.1",
-    "react": "^15.6.1",
-    "react-dom": "^15.6.1",
-    "webpack": "^3.5.5",
-    "webpack-dev-server": "^2.7.1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/chandankumarbv/blogitaway.git"
-  },
-  "bugs": {
-    "url": "https://github.com/chandankumarbv/blogitaway/issues"
-  },
-  "homepage": "https://github.com/chandankumarbv/blogitaway#readme"
+    "name": "blogitaway",
+    "version": "1.0.0",
+    "description": "Blogging web app",
+    "main": "index.js",
+    "scripts": {
+        "start": "webpack-dev-server --hot"
+    },
+    "author": "harish & chandan",
+    "license": "ISC",
+    "dependencies": {
+        "babel-core": "^6.26.0",
+        "babel-loader": "^7.1.2",
+        "babel-preset-es2015": "^6.24.1",
+        "babel-preset-react": "^6.24.1",
+        "react": "^15.6.1",
+        "react-dom": "^15.6.1",
+        "webpack": "^3.5.5",
+        "webpack-dev-server": "^2.7.1",
+        "axios": "^0.16.2"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/chandankumarbv/blogitaway.git"
+    },
+    "bugs": {
+        "url": "https://github.com/chandankumarbv/blogitaway/issues"
+    },
+    "homepage": "https://github.com/chandankumarbv/blogitaway#readme"
 }

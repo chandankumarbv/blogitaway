@@ -5,6 +5,7 @@ import HomePage from './HomePage.jsx';
 import BlogListPage from './BlogListPage.jsx';
 import BlogDetailPage from './BlogDetailPage.jsx';
 import * as Constants from './Constants.jsx';
+import axios from 'axios';
 
 
 class App extends React.Component {
@@ -42,7 +43,7 @@ class App extends React.Component {
     };
 
     goToBlogListPage(search){
-        this.goToPage(Constants.Pages.BLOG_LIST, {search: search});
+        this.goToPage(Constants.Pages.BLOG_LIST, {searchText: search});
     };
 
     goToBlogDetailPage(blogId){
@@ -87,7 +88,7 @@ class App extends React.Component {
                 return <BlogListPage onBlogItemClick={this.goToBlogDetailPage} userId={params.userId} searchText={params.searchText}/>;
 
             case Constants.Pages.BLOG_DETAIL:
-                return <BlogDetailPage/>;
+                return <BlogDetailPage blogId={params.blogId}/>;
 
             default:
                 return <HomePage onLogin={this.onLogin} onBlogItemClick={this.goToBlogDetailPage} loggedIn={this.state.loggedIn}/>;

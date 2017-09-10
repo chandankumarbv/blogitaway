@@ -17,7 +17,7 @@ class BlogListItem extends React.Component {
                 <div className="single-blog two-column">
                     <div className="post-content overflow">
                         <h2 className="post-title bold"><a href="#" onClick={this.onBlogItemClick}>{this.props.title}</a></h2>
-                        <h3 className="post-author"><a href="#">{this.props.author.emailAddress}</a></h3>
+                        <h3 className="post-author"><a href="#">{this.props.owner.emailAddress}</a></h3>
                         <p>{this.props.content}</p>
                         <a className="read-more">View More</a>
                         <div className="post-bottom overflow">

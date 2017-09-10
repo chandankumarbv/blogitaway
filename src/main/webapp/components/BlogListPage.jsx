@@ -1,70 +1,24 @@
 import React from 'react';
 import BlogList from './BlogList.jsx';
+import axios from 'axios';
 
 class BlogListPage extends React.Component {
     constructor(props){
         super(props);
-
-        this.state = {
-            models : [
-                {
-                    id: 1,
-                    title: 'Advanced business cards design',
-                    content: 'Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Nam liber [...]',
-                    author:{
-                        emailAddress: 'micron News'
-                    }
-                },
-                {
-                    id: 2,
-                    title: 'Advanced business cards design',
-                    content: 'Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Nam liber [...]',
-                    author:{
-                        emailAddress: 'micron News'
-                    }
-                },
-                {
-                    id: 3,
-                    title: 'Advanced business cards design',
-                    content: 'Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Nam liber [...]',
-                    author:{
-                        emailAddress: 'micron News'
-                    }
-                },
-                {
-                    id: 4,
-                    title: 'Advanced business cards design',
-                    content: 'Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Nam liber [...]',
-                    author:{
-                        emailAddress: 'micron News'
-                    }
-                },
-                {
-                    id: 5,
-                    title: 'Advanced business cards design',
-                    content: 'Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Nam liber [...]',
-                    author:{
-                        emailAddress: 'micron News'
-                    }
-                },
-                {
-                    id: 6,
-                    title: 'Advanced business cards design',
-                    content: 'Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Nam liber [...]',
-                    author:{
-                        emailAddress: 'micron News'
-                    }
-                },
-                {
-                    id: 7,
-                    title: 'Advanced business cards design',
-                    content: 'Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Nam liber [...]',
-                    author:{
-                        emailAddress: 'micron News'
-                    }
-                }
-            ]
-        };
+        this.state = {models:[]};
+    }
+    
+    componentDidMount(){
+        // Make HTTP reques with Axios
+        axios.get("http://localhost:8585/blogitaway/rest/blog/search?offset=" + 0 + "&limit=" + 20 + "&query=" + this.props.searchText)
+          .then((res) => {
+            console.log(this.props.searchText);
+            console.log(res);
+            // Set state with result
+            this.setState({
+                models : res.data
+            });
+          });
     }
 
 	render() {
@@ -87,7 +41,7 @@ class BlogListPage extends React.Component {
                     <div className="container">
                         <div className="row">
                             <div className="col-md-12 col-sm-12">
-                                <BlogList models={this.state.models}/>
+                                <BlogList models={this.state.models} onBlogItemClick={this.props.onBlogItemClick}/>
                                 <div className="blog-pagination">
                                     <ul className="pagination">
                                         <li><a href="#">left</a></li>
