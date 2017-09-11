@@ -29,6 +29,11 @@ public class BlogServiceImpl implements BlogService {
 	}
 
 	@Override
+	public List<Blog> getBlogsByUser(String userName) {
+		return blogDao.getBlogsByUser(userName);
+	}
+
+	@Override
 	public void postBlog(Blog blog) throws InvalidBlogException, BlogitAwayException {
 		blogDao.create(blog);
 	}

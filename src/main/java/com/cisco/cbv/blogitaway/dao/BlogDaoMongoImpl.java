@@ -9,6 +9,7 @@ import org.mongodb.morphia.query.QueryResults;
 import com.cisco.cbv.blogitaway.model.Blog;
 import com.cisco.cbv.blogitaway.model.Comment;
 import com.cisco.cbv.blogitaway.model.PagingConfig;
+import com.cisco.cbv.blogitaway.model.User;
 
 public class BlogDaoMongoImpl extends BasicDAO<Blog, String> implements BlogDao {
 	private static BlogDao instance;
@@ -52,9 +53,16 @@ public class BlogDaoMongoImpl extends BasicDAO<Blog, String> implements BlogDao 
 	}
 
 	@Override
-	public List<Comment> getAllComments(int blogId) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Blog> getBlogsByUser(String userName) {
+		User user = new User();
+		user.setUserName(userName);
+		QueryResults<Blog> results = find(createQuery().field("owner").equal(user));
+		return results.asList();
+	}
+
+	@Override
+	public List<Comment> getAllComments(String blogId) {
+		return CommentDaoImpl.getInstance().readCommentsOfBlog(blogId);
 	}
 
 	@Override
@@ -65,13 +73,7 @@ public class BlogDaoMongoImpl extends BasicDAO<Blog, String> implements BlogDao 
 
 	@Override
 	public List<Blog> searchBlogs(PagingConfig pagingConfig, String query) {
-		QueryResults<Blog> results = find(createQuery().field("content").contains(query));
+		QueryResults<Blog> results = find(createQuery().field("user").contains(query));
 		return results.asList();
 	}
-
-	@Override
-	public Blog read(int blogId) {
-		return null;
-	}
-
 }

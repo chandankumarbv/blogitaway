@@ -30,4 +30,6 @@ public interface BlogService {
 	List<Comment> getAllComments(String blogId, PagingConfig pagingConfig) throws BlogNotFoundException, NoCommentsFoundException, BlogitAwayException;
 
 	Comment getSpecificComment(String commentId) throws BlogNotFoundException, CommentNotFoundException, InvalidValueException, BlogitAwayException;
+
+	List<Blog> getBlogsByUser(String userName);
 }

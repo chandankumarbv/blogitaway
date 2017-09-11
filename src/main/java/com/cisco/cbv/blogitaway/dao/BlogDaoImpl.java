@@ -39,13 +39,6 @@ public class BlogDaoImpl implements BlogDao {
 	}
 
 	@Override
-	public Blog read(int blogId) {
-		EntityManager entityManager = PersistenceUtil.getEntityManager();
-		Blog blog = entityManager.find(Blog.class, blogId);
-		return blog;
-	}
-
-	@Override
 	public List<Blog> getAllBlogs() {
 		EntityManager entityManager = PersistenceUtil.getEntityManager();
 		Query query = entityManager.createQuery("SELECT b from Blog b");
@@ -54,7 +47,7 @@ public class BlogDaoImpl implements BlogDao {
 	}
 
 	@Override
-	public List<Comment> getAllComments(int blogId) {
+	public List<Comment> getAllComments(String blogId) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -85,6 +78,12 @@ public class BlogDaoImpl implements BlogDao {
 
 	@Override
 	public Blog read(String blogId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Blog> getBlogsByUser(String userName) {
 		// TODO Auto-generated method stub
 		return null;
 	}
