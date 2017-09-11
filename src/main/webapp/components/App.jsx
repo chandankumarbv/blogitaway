@@ -6,6 +6,8 @@ import BlogListPage from './BlogListPage.jsx';
 import BlogDetailPage from './BlogDetailPage.jsx';
 import * as Constants from './Constants.jsx';
 import NewBlogPage from './NewBlog.jsx';
+import LoginPage from './login.jsx';
+import SignUpPage from './SignUpPage.jsx';
 import axios from 'axios';
 
 
@@ -99,8 +101,14 @@ class App extends React.Component {
             case Constants.Pages.NEW_BLOG:
                 return <NewBlogPage onNewBlogCreated={this.goToHomePage}/>;
                 
+            case Constants.Pages.LOGIN:
+                return <LoginPage onLoginSuccess={this.onLogin}/>;
+                
+            case Constants.Pages.SIGNUP:
+                return <SignUpPage onSignupSuccess={this.onLogin}/>
+                
             default:
-                return <HomePage onLogin={this.onLogin} onBlogItemClick={this.goToBlogDetailPage} loggedIn={this.state.loggedIn}/>;
+                return <HomePage onLogin={this.goToLoginPage} onSignUp={this.goToSignUpPage} onBlogItemClick={this.goToBlogDetailPage} loggedIn={this.state.loggedIn}/>;
         }
     };
 

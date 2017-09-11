@@ -29,7 +29,7 @@ class HomePage extends React.Component {
                         <div className="main-slider">
                             {  !this.props.loggedIn &&
                                 <div className="slide-text">
-                                     <a href="#" className="btn btn-common" data-toggle="modal" data-target="#signUpDialog">SIGN UP</a>&nbsp;&nbsp;<a href="#" data-toggle="modal" data-target="#signInDialog" className="btn btn-common" onClick={this.props.onLogin}>SIGN IN</a>
+                                     <a href="#" className="btn btn-common" onClick={this.props.onSignUp}>SIGN UP</a>&nbsp;&nbsp;<a href="#" className="btn btn-common" onClick={this.props.onLogin}>SIGN IN</a>
                                 </div>
                             }
                             {
@@ -49,62 +49,6 @@ class HomePage extends React.Component {
                         </div>
                     </div>
                 </section>
-                <div id="signInDialog" className="modal fade" role="dialog">
-                    <div className="modal-dialog">
-                        <div className="modal-content">
-                            <div className="modal-header">
-                                <button type="button" className="close" data-dismiss="modal">&times;</button>
-                                <h4 className="modal-title">Sign In</h4>
-                            </div>
-                            <div className="modal-body">
-                                <form id="signInForm">
-                                    <div className="form-group">
-                                        <label htmlFor="username">Username:</label>
-                                        <input type="text" className="form-control" id="username"/>
-                                    </div>
-                                    <div className="form-group">
-                                        <label htmlFor="pwd">Password:</label>
-                                        <input type="password" className="form-control" id="pwd"/>
-                                    </div>
-                                    <div className="checkbox">
-                                        <label>
-                                            <input type="checkbox"/> Remember me</label>
-                                    </div>
-                                    <button type="submit" data-dismiss="modal" className="btn btn-default">Submit</button>
-                                </form>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-                <div id="signUpDialog" className="modal fade" role="dialog">
-                    <div className="modal-dialog">
-                        <div className="modal-content">
-                            <div className="modal-header">
-                                <button type="button" className="close" data-dismiss="modal">&times;</button>
-                                <h4 className="modal-title">Sign Up</h4>
-                            </div>
-                            <div className="modal-body">
-                                <form id="signUpForm">
-                                    <div className="form-group">
-                                        <label htmlFor="username">Username:</label>
-                                        <input type="text" className="form-control" id="username"/>
-                                    </div>
-                                    <div className="form-group">
-                                        <label htmlFor="pwd">Password:</label>
-                                        <input type="password" className="form-control" id="pwd"/>
-                                    </div>
-                                    <div className="form-group">
-                                        <label htmlFor="pwd">Confirm Password:</label>
-                                        <input type="password" className="form-control" id="pwd"/>
-                                    </div>
-                                    <button type="submit" data-dismiss="modal" className="btn btn-default">Submit</button>
-                                </form>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
                 <section id="services">
                     <div className="container">
         <BlogList models={this.state.models} onBlogItemClick={this.props.onBlogItemClick}/>
