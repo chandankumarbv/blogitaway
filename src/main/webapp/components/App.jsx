@@ -5,6 +5,7 @@ import HomePage from './HomePage.jsx';
 import BlogListPage from './BlogListPage.jsx';
 import BlogDetailPage from './BlogDetailPage.jsx';
 import * as Constants from './Constants.jsx';
+import NewBlogPage from './NewBlog.jsx';
 import axios from 'axios';
 
 
@@ -28,6 +29,7 @@ class App extends React.Component {
 		this.onLogin = this.onLogin.bind(this);
 		this.logout = this.logout.bind(this);
 		this.onSearch = this.onSearch.bind(this);
+        this.goToNewBlogPage = this.goToNewBlogPage.bind(this);
     }
 
     goToPage(page, params){
@@ -38,6 +40,10 @@ class App extends React.Component {
         });
     };
 
+    goToNewBlogPage(){
+        this.goToPage(Constants.Pages.NEW_BLOG, null);
+    }
+    
     goToHomePage(){
         this.goToPage(Constants.Pages.HOME, null);
     };
@@ -90,6 +96,9 @@ class App extends React.Component {
             case Constants.Pages.BLOG_DETAIL:
                 return <BlogDetailPage blogId={params.blogId}/>;
 
+            case Constants.Pages.NEW_BLOG:
+                return <NewBlogPage onNewBlogCreated={this.goToHomePage}/>;
+                
             default:
                 return <HomePage onLogin={this.onLogin} onBlogItemClick={this.goToBlogDetailPage} loggedIn={this.state.loggedIn}/>;
         }
@@ -106,7 +115,7 @@ class App extends React.Component {
 
 	  	return (
             <div>
-                <PageHeader logout={this.logout} loggedIn={this.state.loggedIn} onSearch={this.onSearch} onHomeClick={this.goToHomePage}></PageHeader>
+                <PageHeader logout={this.logout} loggedIn={this.state.loggedIn} onSearch={this.onSearch} onHomeClick={this.goToHomePage} onNewBlogClick={this.goToNewBlogPage}></PageHeader>
                 {pageBody}
                 <PageFooter></PageFooter>
             </div>

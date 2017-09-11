@@ -4,5 +4,6 @@ export const Pages = {
     BLOG_DETAIL: 'BlogDetals',
     LOGIN: 'Login',
     SIGNUP: 'SignUp',
-    USER_PROFILE: 'UserProfile'
+    USER_PROFILE: 'UserProfile',
+    NEW_BLOG: 'NewBlog'
 };

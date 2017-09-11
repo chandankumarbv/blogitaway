@@ -59,7 +59,7 @@ class PageHeader extends React.Component {
 							<ul className="nav navbar-nav navbar-right">
 								<li id="home-menu"><a onClick={this.props.onHomeClick}>Home</a></li>
 								{
-									this.props.loggedIn && <li><a data-toggle="modal" data-target="#newBlogDialog">New Blog</a></li>
+									this.props.loggedIn && <li><a onClick={this.props.onNewBlogClick}>New Blog</a></li>
 								}
 								{
 									this.props.loggedIn && <li><a onClick={this.props.logout}>Sign Out</a></li>
