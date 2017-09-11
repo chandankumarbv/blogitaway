@@ -11,7 +11,7 @@ class HomePage extends React.Component {
     
     componentDidMount(){
         // Make HTTP reques with Axios
-        axios.get("http://localhost:8585/blogitaway/rest/blog?offset=" + 0 + "&limit=" + 20)
+        axios.get("rest/blog?offset=" + 0 + "&limit=" + 20)
           .then((res) => {
             console.log(res);
             // Set state with result

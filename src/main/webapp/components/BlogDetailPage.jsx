@@ -18,7 +18,7 @@ class BlogDetailPage extends React.Component {
     
     componentDidMount(){
         // Make HTTP reques with Axios
-        axios.get("http://localhost:8585/blogitaway/rest/blog/" + this.props.blogId)
+        axios.get("rest/blog/" + this.props.blogId)
           .then((res) => {
             console.log(this.props.blogId);
             console.log(res);

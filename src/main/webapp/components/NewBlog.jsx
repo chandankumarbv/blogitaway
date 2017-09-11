@@ -23,7 +23,7 @@ class NewBlogPage extends React.Component {
     }
     
     saveBlog(){
-        axios.post("http://localhost:8585/blogitaway/rest/blog/", {
+        axios.post("rest/blog/", {
                 title: this.state.title,
                 content: this.state.content
           })

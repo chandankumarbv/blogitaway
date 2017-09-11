@@ -10,7 +10,7 @@ class BlogListPage extends React.Component {
     
     componentDidMount(){
         // Make HTTP reques with Axios
-        axios.get("http://localhost:8585/blogitaway/rest/blog/search?offset=" + 0 + "&limit=" + 20 + "&query=" + this.props.searchText)
+        axios.get("rest/blog/search?offset=" + 0 + "&limit=" + 20 + "&query=" + this.props.searchText)
           .then((res) => {
             console.log(this.props.searchText);
             console.log(res);
