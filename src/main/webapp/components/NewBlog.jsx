@@ -23,13 +23,29 @@ class NewBlogPage extends React.Component {
     }
     
     saveBlog(){
-        axios.post("rest/blog/", {
-                title: this.state.title,
-                content: this.state.content
-          })
-          .then((res) => {
+        var axios_instance = axios.create({
+          headers: { "Authorization": "Bearer " + this.props.authToken}
+        })
+        axios({
+                method:'post',
+                url:'rest/blog/',
+                headers: { "Authorization": "Bearer " + this.props.authToken},
+                data: {
+                    title: this.state.title,
+                    content: this.state.content
+                }
+        })
+        .then((res) => {
             this.props.onNewBlogCreated();
-          });
+        });
+        
+//        axios.post("rest/blog/", {
+//                title: this.state.title,
+//                content: this.state.content
+//          })
+//          .then((res) => {
+//            this.props.onNewBlogCreated();
+//          });
     }
     
 	render() {

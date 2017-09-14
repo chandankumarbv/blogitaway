@@ -5,29 +5,34 @@ class LoginPage extends React.Component {
     constructor(props) {
         super(props)
         this.state = { 
-            content: '',
-            title: ''
+            userName: '',
+            password: ''
         } // You can also pass a Quill Delta here
-        this.handleChange = this.handleChange.bind(this)
-        this.handleTitleChange = this.handleTitleChange.bind(this)
-        this.saveBlog = this.saveBlog.bind(this)
+        this.handleUserNameChange = this.handleUserNameChange.bind(this)
+        this.handlePasswordChange = this.handlePasswordChange.bind(this)
+        this.loginClick = this.loginClick.bind(this)
     }
 
-    handleChange(value) {
-        this.setState({ content: value })
+    handleUserNameChange(e) {
+        this.setState({ userName: e.target.value })
     }
     
-    handleTitleChange(e) {
-    	this.setState({title : e.target.value});
+    handlePasswordChange(e) {
+    	this.setState({password : e.target.value});
     }
     
-    saveBlog(){
-        axios.post("rest/blog/", {
-                title: this.state.title,
-                content: this.state.content
+    loginClick(){
+        axios.post("rest/user/login", {
+                userName: this.state.userName,
+                password: this.state.password
           })
           .then((res) => {
-            this.props.onNewBlogCreated();
+                alert(res.data);
+                
+                this.props.onLoginSuccess({
+                    authToken: res.data,
+                    userName: this.state.userName
+                });
           });
     }
     
@@ -39,17 +44,18 @@ class LoginPage extends React.Component {
                         <form id="signInForm">
                                 <div className="form-group">
                                     <label htmlFor="username">Username:</label>
-                                    <input type="text" className="form-control" id="username"/>
+                                    <input type="text" className="form-control" id="username" onChange={this.handleUserNameChange}/>
                                 </div>
                                 <div className="form-group">
                                     <label htmlFor="pwd">Password:</label>
-                                    <input type="password" className="form-control" id="pwd"/>
+                                    <input type="password" className="form-control" id="pwd"
+                                    onChange={this.handlePasswordChange}/>
                                 </div>
                                 <div className="checkbox">
                                     <label>
                                         <input type="checkbox"/> Remember me</label>
                                 </div>
-                                <button type="submit" data-dismiss="modal" className="btn btn-default">Submit</button>
+                                <button type="button" className="btn btn-default" onClick={this.loginClick}>Submit</button>
                          </form>
                    </div>
                 </section>

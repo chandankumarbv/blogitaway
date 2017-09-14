@@ -36019,7 +36019,7 @@ var App = function (_React$Component) {
                     return _react2.default.createElement(_BlogDetailPage2.default, { blogId: params.blogId });
 
                 case Constants.Pages.NEW_BLOG:
-                    return _react2.default.createElement(_NewBlog2.default, { onNewBlogCreated: this.goToHomePage });
+                    return _react2.default.createElement(_NewBlog2.default, { onNewBlogCreated: this.goToHomePage, authToken: this.state.loggedInUserDetails.authToken });
 
                 case Constants.Pages.LOGIN:
                     return _react2.default.createElement(_login2.default, { onLoginSuccess: this.onLogin });
@@ -36400,7 +36400,7 @@ var HomePage = function (_React$Component) {
             var _this2 = this;
 
             // Make HTTP reques with Axios
-            _axios2.default.get("http://localhost:8585/blogitaway/rest/blog?offset=" + 0 + "&limit=" + 20).then(function (res) {
+            _axios2.default.get("rest/blog?offset=" + 0 + "&limit=" + 20).then(function (res) {
                 console.log(res);
                 // Set state with result
                 _this2.setState({
@@ -37531,7 +37531,7 @@ var BlogListPage = function (_React$Component) {
             var _this2 = this;
 
             // Make HTTP reques with Axios
-            _axios2.default.get("http://localhost:8585/blogitaway/rest/blog/search?offset=" + 0 + "&limit=" + 20 + "&query=" + this.props.searchText).then(function (res) {
+            _axios2.default.get("rest/blog/search?offset=" + 0 + "&limit=" + 20 + "&query=" + this.props.searchText).then(function (res) {
                 console.log(_this2.props.searchText);
                 console.log(res);
                 // Set state with result
@@ -37763,7 +37763,7 @@ var BlogDetailPage = function (_React$Component) {
             var _this2 = this;
 
             // Make HTTP reques with Axios
-            _axios2.default.get("http://localhost:8585/blogitaway/rest/blog/" + this.props.blogId).then(function (res) {
+            _axios2.default.get("rest/blog/" + this.props.blogId).then(function (res) {
                 console.log(_this2.props.blogId);
                 console.log(res);
                 // Set state with result
@@ -37935,12 +37935,28 @@ var NewBlogPage = function (_React$Component) {
         value: function saveBlog() {
             var _this2 = this;
 
-            _axios2.default.post("http://localhost:8585/blogitaway/rest/blog/", {
-                title: this.state.title,
-                content: this.state.content
+            var axios_instance = _axios2.default.create({
+                headers: { "Authorization": "Bearer " + this.props.authToken }
+            });
+            (0, _axios2.default)({
+                method: 'post',
+                url: 'rest/blog/',
+                headers: { "Authorization": "Bearer " + this.props.authToken },
+                data: {
+                    title: this.state.title,
+                    content: this.state.content
+                }
             }).then(function (res) {
                 _this2.props.onNewBlogCreated();
             });
+
+            //        axios.post("rest/blog/", {
+            //                title: this.state.title,
+            //                content: this.state.content
+            //          })
+            //          .then((res) => {
+            //            this.props.onNewBlogCreated();
+            //          });
         }
     }, {
         key: 'render',
@@ -43856,34 +43872,39 @@ var LoginPage = function (_React$Component) {
         var _this = _possibleConstructorReturn(this, (LoginPage.__proto__ || Object.getPrototypeOf(LoginPage)).call(this, props));
 
         _this.state = {
-            content: '',
-            title: '' // You can also pass a Quill Delta here
-        };_this.handleChange = _this.handleChange.bind(_this);
-        _this.handleTitleChange = _this.handleTitleChange.bind(_this);
-        _this.saveBlog = _this.saveBlog.bind(_this);
+            userName: '',
+            password: '' // You can also pass a Quill Delta here
+        };_this.handleUserNameChange = _this.handleUserNameChange.bind(_this);
+        _this.handlePasswordChange = _this.handlePasswordChange.bind(_this);
+        _this.loginClick = _this.loginClick.bind(_this);
         return _this;
     }
 
     _createClass(LoginPage, [{
-        key: 'handleChange',
-        value: function handleChange(value) {
-            this.setState({ content: value });
+        key: 'handleUserNameChange',
+        value: function handleUserNameChange(e) {
+            this.setState({ userName: e.target.value });
         }
     }, {
-        key: 'handleTitleChange',
-        value: function handleTitleChange(e) {
-            this.setState({ title: e.target.value });
+        key: 'handlePasswordChange',
+        value: function handlePasswordChange(e) {
+            this.setState({ password: e.target.value });
         }
     }, {
-        key: 'saveBlog',
-        value: function saveBlog() {
+        key: 'loginClick',
+        value: function loginClick() {
             var _this2 = this;
 
-            _axios2.default.post("http://localhost:8585/blogitaway/rest/blog/", {
-                title: this.state.title,
-                content: this.state.content
+            _axios2.default.post("rest/user/login", {
+                userName: this.state.userName,
+                password: this.state.password
             }).then(function (res) {
-                _this2.props.onNewBlogCreated();
+                alert(res.data);
+
+                _this2.props.onLoginSuccess({
+                    authToken: res.data,
+                    userName: _this2.state.userName
+                });
             });
         }
     }, {
@@ -43909,7 +43930,7 @@ var LoginPage = function (_React$Component) {
                                     { htmlFor: 'username' },
                                     'Username:'
                                 ),
-                                _react2.default.createElement('input', { type: 'text', className: 'form-control', id: 'username' })
+                                _react2.default.createElement('input', { type: 'text', className: 'form-control', id: 'username', onChange: this.handleUserNameChange })
                             ),
                             _react2.default.createElement(
                                 'div',
@@ -43919,7 +43940,8 @@ var LoginPage = function (_React$Component) {
                                     { htmlFor: 'pwd' },
                                     'Password:'
                                 ),
-                                _react2.default.createElement('input', { type: 'password', className: 'form-control', id: 'pwd' })
+                                _react2.default.createElement('input', { type: 'password', className: 'form-control', id: 'pwd',
+                                    onChange: this.handlePasswordChange })
                             ),
                             _react2.default.createElement(
                                 'div',
@@ -43933,7 +43955,7 @@ var LoginPage = function (_React$Component) {
                             ),
                             _react2.default.createElement(
                                 'button',
-                                { type: 'submit', 'data-dismiss': 'modal', className: 'btn btn-default' },
+                                { type: 'button', className: 'btn btn-default', onClick: this.loginClick },
                                 'Submit'
                             )
                         )
@@ -44009,7 +44031,7 @@ var SignUpPage = function (_React$Component) {
         value: function saveBlog() {
             var _this2 = this;
 
-            _axios2.default.post("http://localhost:8585/blogitaway/rest/blog/", {
+            _axios2.default.post("rest/blog/", {
                 title: this.state.title,
                 content: this.state.content
             }).then(function (res) {
