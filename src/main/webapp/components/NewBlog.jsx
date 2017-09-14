@@ -41,28 +41,33 @@ class NewBlogPage extends React.Component {
         .then((res) => {
             this.props.onNewBlogCreated();
         });
-        
-//        axios.post("rest/blog/", {
-//                title: this.state.title,
-//                content: this.state.content
-//          })
-//          .then((res) => {
-//            this.props.onNewBlogCreated();
-//          });
     }
     
 	render() {
 	  	return (
             <div id="new-blog-page-container" className="padding-top">
+               <section id="page-breadcrumb">
+                    <div className="vertical-center sun">
+                        <div className="container">
+                            <div className="row">
+                                <div className="action">
+                                    <div className="col-sm-12">
+                                        <h1 className="title">Add a new blog</h1>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
                 <section id="new-blog-page">
                    <div className="container">
                         <form id="newBlogForm">
-                            <div class="form-group">
-                                <label for="title">Title:</label>
-                                <input type="text" class="form-control" id="title" value={this.state.title}  onChange={this.handleTitleChange} />
+                            <div className="form-group">
+                                <label htmlFor="title">Title:</label>
+                                <input type="text" className="form-control" id="title" value={this.state.title}  onChange={this.handleTitleChange} />
                             </div>
-                            <div class="form-group">
-                                <label for="content">BlogContent:</label>
+                            <div className="form-group">
+                                <label htmlFor="content">BlogContent:</label>
                                 <ReactQuill value={this.state.content} onChange={this.handleChange} />
                             </div>
                             <button type="button" onClick={this.saveBlog}>Submit</button>

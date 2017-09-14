@@ -34,6 +34,19 @@ class SignUpPage extends React.Component {
 	render() {
 	  	return (
             <div id="new-blog-page-container" className="padding-top">
+               <section id="page-breadcrumb">
+                    <div className="vertical-center sun">
+                        <div className="container">
+                            <div className="row">
+                                <div className="action">
+                                    <div className="col-sm-12">
+                                        <h1 className="title">Sign Up</h1>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
                 <section id="new-blog-page">
                    <div className="container">
                        <form id="signUpForm">
