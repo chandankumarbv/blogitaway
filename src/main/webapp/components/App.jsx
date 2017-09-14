@@ -99,7 +99,7 @@ class App extends React.Component {
                 return <BlogDetailPage blogId={params.blogId}/>;
 
             case Constants.Pages.NEW_BLOG:
-                return <NewBlogPage onNewBlogCreated={this.goToHomePage} authToken={this.state.loggedInUserDetails.authToken}/>;
+                return <NewBlogPage onNewBlogCreated={this.goToHomePage} authToken={this.state.loggedInUserDetails.authToken} userName={this.state.loggedInUserDetails.userName}/>;
                 
             case Constants.Pages.LOGIN:
                 return <LoginPage onLoginSuccess={this.onLogin}/>;

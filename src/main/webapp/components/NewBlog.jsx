@@ -32,7 +32,10 @@ class NewBlogPage extends React.Component {
                 headers: { "Authorization": "Bearer " + this.props.authToken},
                 data: {
                     title: this.state.title,
-                    content: this.state.content
+                    content: this.state.content,
+                    owner: {
+                        userName: this.props.userName
+                    }
                 }
         })
         .then((res) => {
