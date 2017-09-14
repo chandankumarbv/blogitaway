@@ -13,7 +13,7 @@ class BlogListItem extends React.Component {
     };
     
     trimBlogContent(blogContent){
-        var length = 20;
+        var length = 120;
         var trimmedString = blogContent.length > length ? 
                 blogContent.substring(0, 20) + "..." : blogContent;
         return trimmedString;

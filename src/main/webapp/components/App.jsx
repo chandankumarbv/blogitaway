@@ -17,7 +17,7 @@ class App extends React.Component {
         this.state = {
             page: Constants.Pages.HOME,
             loggedIn: false,
-            loggedInUserDetails: null,
+            loggedInUserDetails: {authToken:'', userName:''},
             params: null
         };
 
@@ -96,7 +96,7 @@ class App extends React.Component {
                 return <BlogListPage onBlogItemClick={this.goToBlogDetailPage} userId={params.userId} searchText={params.searchText}/>;
 
             case Constants.Pages.BLOG_DETAIL:
-                return <BlogDetailPage blogId={params.blogId}/>;
+                return <BlogDetailPage blogId={params.blogId} authToken={this.state.loggedInUserDetails.authToken} userName={this.state.loggedInUserDetails.userName} loggedIn={this.state.loggedIn}/>;
 
             case Constants.Pages.NEW_BLOG:
                 return <NewBlogPage onNewBlogCreated={this.goToHomePage} authToken={this.state.loggedInUserDetails.authToken} userName={this.state.loggedInUserDetails.userName}/>;
