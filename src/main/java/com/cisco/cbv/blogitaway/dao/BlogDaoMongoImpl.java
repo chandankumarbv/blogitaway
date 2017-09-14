@@ -73,7 +73,7 @@ public class BlogDaoMongoImpl extends BasicDAO<Blog, String> implements BlogDao 
 
 	@Override
 	public List<Blog> searchBlogs(PagingConfig pagingConfig, String query) {
-		QueryResults<Blog> results = find(createQuery().field("user").contains(query));
+		QueryResults<Blog> results = find(createQuery().field("content").contains(query));
 		return results.asList();
 	}
 }
