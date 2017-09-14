@@ -38,8 +38,12 @@ public class UserServerResource {
 
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response createUser(User user) throws NoSuchAlgorithmException, IllegalArgumentException, UnsupportedEncodingException {
+	public Response createUser(User user) throws Throwable {
 
+		User userFromDb = UserDaoImpl.getInstance().read(user.getUserName());
+		if(userFromDb!=null) {
+			throw new Throwable("User Name already exists !");
+		}
 		UserDaoImpl.getInstance().create(user);
 		String token = TokenUtil.issueAndStoreToken(user.getUserName());
 		return Response.ok().entity(token).build();

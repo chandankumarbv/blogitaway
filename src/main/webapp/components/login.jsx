@@ -33,7 +33,10 @@ class LoginPage extends React.Component {
                     authToken: res.data,
                     userName: this.state.userName
                 });
-          });
+          })
+          .catch((err) => {
+              alert(err.response.data)
+          })
     }
     
 	render() {
