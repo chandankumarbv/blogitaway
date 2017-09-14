@@ -26,7 +26,7 @@ class BlogListItem extends React.Component {
                     <div className="post-content overflow">
                         <h2 className="post-title bold"><a href="#" onClick={this.onBlogItemClick}>{this.props.title}</a></h2>
                         <h3 className="post-author"><a href="#">{this.props.owner.userName}</a></h3>
-                        <p>{this.trimBlogContent(this.props.content)}</p>
+                        <div dangerouslySetInnerHTML={{__html: this.trimBlogContent(this.props.content)}}></div>
                         <a className="read-more">View More</a>
                         <div className="post-bottom overflow">
                             <ul className="nav nav-justified post-nav">
