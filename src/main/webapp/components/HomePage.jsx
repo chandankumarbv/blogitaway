@@ -1,6 +1,7 @@
 import React from 'react';
 import BlogList from './BlogList.jsx';
 import axios from 'axios';
+import {SERVER} from './Constants.jsx';
 
 class HomePage extends React.Component {
 
@@ -10,8 +11,8 @@ class HomePage extends React.Component {
     }
     
     componentDidMount(){
-        // Make HTTP reques with Axios
-        axios.get("rest/blog?offset=" + 0 + "&limit=" + 20)
+        // Make HTTP request with Axios
+        axios.get(SERVER + "rest/blog?offset=" + 0 + "&limit=" + 20)
           .then((res) => {
             console.log(res);
             // Set state with result

@@ -42,13 +42,13 @@ class BlogDetailPage extends React.Component {
                                             <div className="post-content overflow">
                                                 <span id="blogdetails-contentContainer">
                                                     <span>
-                                                        <h2 className="post-title bold">
+                                                        <h1 className="post-title bold ">
                                                             <a href="#">{this.state.blog.title}</a>
-                                                        </h2>
-                                                        <h3 className="post-author">
-                                                            <a href="#">{this.state.blog.owner.emailAddress}</a>
-                                                        </h3>
-                                                        <span>{this.state.blog.content}</span>
+                                                        </h1>
+                                                        <h5 className="post-author">
+                                                            @ {this.state.blog.owner.userName}
+                                                        </h5>
+                                                        <div dangerouslySetInnerHTML={{__html: this.state.blog.content}}></div>
                                                     </span>
                                                 </span>
                                             </div>
