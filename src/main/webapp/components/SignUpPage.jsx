@@ -11,14 +11,50 @@ class SignUpPage extends React.Component {
         this.handleChange = this.handleChange.bind(this)
         this.handleTitleChange = this.handleTitleChange.bind(this)
         this.saveBlog = this.saveBlog.bind(this)
+        this.signUpClick = this.signUpClick.bind(this)
+        this.validatePassword = this.validatePassword.bind(this)
     }
 
+    validatePassword(value){
+        if(this.refs.password.value != this.refs.confirmpassword.value){
+            document.getElementById("passwordMatchError").style.visibility = "visible";
+            return false;
+        }else{
+            document.getElementById("passwordMatchError").style.visibility = "hidden";
+            return true;
+        }
+        
+        
+    }
+    
     handleChange(value) {
         this.setState({ content: value })
     }
     
     handleTitleChange(e) {
     	this.setState({title : e.target.value});
+    }
+    
+    signUpClick(){
+        if(this.validatePassword()){
+            axios.post("rest/user", {
+                userName: this.refs.username.value,
+                password: this.refs.password.value
+          })
+          .then((res) => {
+                alert(res.data);
+                
+                this.props.onSignupSuccess({
+                    authToken: res.data,
+                    userName: this.state.userName
+                });
+          })
+          .catch((err) => {
+              alert(err.response.data.message)
+          })
+            
+          ;
+        }
     }
     
     saveBlog(){
@@ -34,7 +70,7 @@ class SignUpPage extends React.Component {
 	render() {
 	  	return (
             <div id="new-blog-page-container" className="padding-top">
-               <section id="page-breadcrumb">
+               <section id="page-breadcrumb" >
                     <div className="vertical-center sun">
                         <div className="container">
                             <div className="row">
@@ -52,17 +88,18 @@ class SignUpPage extends React.Component {
                        <form id="signUpForm">
                                     <div className="form-group">
                                         <label htmlFor="username">Username:</label>
-                                        <input type="text" className="form-control" id="username"/>
+                                        <input type="text" className="form-control" id="username" ref="username" />
                                     </div>
                                     <div className="form-group">
                                         <label htmlFor="pwd">Password:</label>
-                                        <input type="password" className="form-control" id="pwd"/>
+                                        <input type="password" className="form-control" id="pwd" onChange={this.validatePassword} ref="password" />
                                     </div>
                                     <div className="form-group">
                                         <label htmlFor="pwd">Confirm Password:</label>
-                                        <input type="password" className="form-control" id="pwd"/>
+                                        <input type="password" className="form-control" id="pwd" onChange={this.validatePassword} ref="confirmpassword"/>
                                     </div>
-                                    <button type="submit" data-dismiss="modal" className="btn btn-default">Submit</button>
+                                     <div className="form-group" style={{visibility:"hidden"}} id="passwordMatchError"><img src="images/warning.png" style={{marginRight: "10px"}}/>Password do not match !</div> 
+                                    <button type="submit" onClick={this.signUpClick} data-dismiss="modal" className="btn btn-default">Submit</button>
                         </form>
                    </div>
                 </section>
