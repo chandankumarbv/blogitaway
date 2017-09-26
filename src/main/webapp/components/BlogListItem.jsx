@@ -13,10 +13,10 @@ class BlogListItem extends React.Component {
     };
     
     trimBlogContent(blogContent){
-        var length = 120;
+        var length = 40;
         var trimmedString = blogContent.length > length ? 
-                blogContent.substring(0, 20) + "..." : blogContent;
-        return trimmedString;
+                blogContent.substring(0, length) + "..." : blogContent;
+                return trimmedString;
     }
 
 	render() {
@@ -25,14 +25,13 @@ class BlogListItem extends React.Component {
                 <div className="single-blog two-column">
                     <div className="post-content overflow">
                         <h2 className="post-title bold"><a href="#" onClick={this.onBlogItemClick}>{this.props.title}</a></h2>
-                        <h3 className="post-author"><a href="#">@{this.props.owner.userName}</a></h3>
+                        
                         <div dangerouslySetInnerHTML={{__html: this.trimBlogContent(this.props.content)}}></div>
-                        <a className="read-more">View More</a>
+                        <a className="read-more" onClick={this.onBlogItemClick}>View More</a>
                         <div className="post-bottom overflow">
                             <ul className="nav nav-justified post-nav">
-                                <li><a href="#"><i className="fa fa-tag"></i>Creative</a></li>
-                                <li><a href="#"><i className="fa fa-heart"></i>32 Love</a></li>
-                                <li><a href="#" onClick={this.onBlogItemClick}><i className="fa fa-comments"></i>3 Comments</a></li>
+                                <li>Author: {this.props.owner.userName}</li>
+                                <li>Created @: {this.props.createdAt}</li>
                             </ul>
                         </div>
                     </div>

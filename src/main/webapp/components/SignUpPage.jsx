@@ -46,7 +46,7 @@ class SignUpPage extends React.Component {
                 
                 this.props.onSignupSuccess({
                     authToken: res.data,
-                    userName: this.state.userName
+                    userName: this.refs.username.value
                 });
           })
           .catch((err) => {

@@ -35,7 +35,8 @@ class NewBlogPage extends React.Component {
                     content: this.state.content,
                     owner: {
                         userName: this.props.userName
-                    }
+                    },
+                    createdAt: new Date().toJSON().slice(0,10)
                 }
         })
         .then((res) => {
