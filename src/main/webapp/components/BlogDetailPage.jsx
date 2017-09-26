@@ -98,6 +98,13 @@ class BlogDetailPage extends React.Component {
                                         </div>
                                         <div className="response-area">
                                             <h2 className="bold">Comments</h2>
+                                            <CommentList models={this.state.comments} />
+                                            {
+                                                
+                                                this.props.loggedIn &&
+                                                <h3>Add Comment</h3>
+                                                     
+                                             }
                                             {
                                                
                                                 this.props.loggedIn &&
@@ -107,7 +114,6 @@ class BlogDetailPage extends React.Component {
                                                 </div>
                                                      
                                              }
-                                            <CommentList models={this.state.comments} />
                                         </div>
                                     </div>
                                 </div>

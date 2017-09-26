@@ -21,6 +21,23 @@ class BlogListPage extends React.Component {
           });
     }
 
+    componentWillReceiveProps(nextProps){
+        console.log(nextProps)
+        // Make HTTP reques with Axios
+        console.log("Component Update");
+        console.log(this.props.searchText);
+        if(nextProps.searchText != this.props.searchText){
+        axios.get("rest/blog/search?offset=" + 0 + "&limit=" + 20 + "&query=" + this.props.searchText)
+          .then((res) => {
+              console.log(nextProps.searchText);
+            console.log(res);
+            // Set state with result
+            this.setState({
+                models : res.data
+            });
+          });
+        }
+    }
 	render() {
 	  	return (
 			<div id="blog-list-page-container" className="padding-top">
@@ -44,10 +61,10 @@ class BlogListPage extends React.Component {
                                 <BlogList models={this.state.models} onBlogItemClick={this.props.onBlogItemClick}/>
                                 <div className="blog-pagination">
                                     <ul className="pagination">
-                                        <li><a href="#">left</a></li>
-                                        <li><a href="#">1</a></li>
+                                        <li ><a href="#">left</a></li>
+                                        <li className="active"><a href="#">1</a></li>
                                         <li><a href="#">2</a></li>
-                                        <li className="active"><a href="#">3</a></li>
+                                        <li ><a href="#">3</a></li>
                                         <li><a href="#">4</a></li>
                                         <li><a href="#">5</a></li>
                                         <li><a href="#">6</a></li>
