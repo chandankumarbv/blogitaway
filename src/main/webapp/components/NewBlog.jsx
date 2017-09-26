@@ -68,9 +68,9 @@ class NewBlogPage extends React.Component {
                             </div>
                             <div className="form-group">
                                 <label htmlFor="content">BlogContent:</label>
-                                <ReactQuill value={this.state.content} onChange={this.handleChange} />
+                                <ReactQuill style={{height:"100px"}} value={this.state.content} onChange={this.handleChange} />
                             </div>
-                            <button type="button" onClick={this.saveBlog}>Submit</button>
+                            <button type="button" style={{marginTop:"50px"}} onClick={this.saveBlog}>Submit</button>
                         </form>
                    </div>
                 </section>

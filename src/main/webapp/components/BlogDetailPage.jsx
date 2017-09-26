@@ -109,8 +109,8 @@ class BlogDetailPage extends React.Component {
                                                
                                                 this.props.loggedIn &&
                                                 <div className="form-group">
-                                                    <ReactQuill value={this.state.commentContent} onChange={this.handleChange} />
-                                                    <button type="button" onClick={this.saveComment}>Post</button> 
+                                                    <ReactQuill style={{height:"100px"}} value={this.state.commentContent} onChange={this.handleChange} />
+                                                    <button type="button" style={{marginTop:"50px"}} onClick={this.saveComment}>Post</button> 
                                                 </div>
                                                      
                                              }
